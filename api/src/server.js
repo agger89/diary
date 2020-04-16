@@ -7,7 +7,7 @@ const http = require('http');
 var server = http.createServer(app);
 
 
-const portNo = 3001;
+const portNo = 5555;
 // body-parser를 사용합니다.
 const bodyParser = require('body-parser');
 // 소켓
