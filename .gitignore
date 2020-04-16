@@ -2,3 +2,5 @@ client/.next
 client/node_modules
 
 api/node_modules
+api/config
+api/src/server.js
