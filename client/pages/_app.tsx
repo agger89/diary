@@ -10,6 +10,7 @@ interface AppProps {
 class MyApp extends App<AppProps> {
   public render(): JSX.Element {
     const { Component, pageProps, apolloClient } = this.props
+
     return (
       <ApolloProvider client={apolloClient}>
         <Component {...pageProps} />

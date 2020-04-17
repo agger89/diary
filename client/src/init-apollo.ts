@@ -19,8 +19,8 @@ function create(
     connectToDevTools: isBrowser,
     ssrMode: !isBrowser, // Disables forceFetch on the server (so queries are only run once)
     link: new HttpLink({
-      uri: `${baseURL}/graphql`, // Server URL (must be absolute)
-      credentials: 'include', // Additional fetch() options like `credentials` or `headers`
+      uri: `${baseURL}/api/member`, // Server URL (must be absolute)
+      credentials: 'same-origin',
       // Use fetch() polyfill on the server
       fetch: !isBrowser && fetch,
       headers: {

@@ -26,7 +26,7 @@ export default (MyApp: typeof App) => {
         appProps = await App.getInitialProps(ctx)
       }
 
-      const baseURL = process.env.API_BASE_URL || 'http://localhost:4000'
+      const baseURL = 'http://13.125.145.159:5555'
 
       // Run all GraphQL queries in the component tree
       // and extract the resulting data
@@ -35,6 +35,7 @@ export default (MyApp: typeof App) => {
         try {
           // Run all GraphQL queries
           const appOwnProps: {} = { apolloClient: apollo } // Type hack
+          // 데이터를 렌더링시와 같이 패치하고 캐시 getDataFromTree
           await getDataFromTree(<AppTree {...appProps} {...appOwnProps} />)
         } catch (error) {
           // Prevent Apollo Client GraphQL errors from crashing SSR.
@@ -47,7 +48,7 @@ export default (MyApp: typeof App) => {
         // head side effect therefore need to be cleared manually
         Head.rewind()
       }
-
+      
       // Extract query data from the Apollo store
       const apolloState = apollo.cache.extract()
 
