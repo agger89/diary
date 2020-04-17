@@ -1,57 +1,83 @@
-// 웹 서버를 실행합니다. --- (※2)
-const express = require('express');
-const fs = require('fs');
-const cp = require('../config');
-const app = express();
-const http = require('http');
-var server = http.createServer(app);
-
-
-const portNo = 5555;
-// body-parser를 사용합니다.
 const bodyParser = require('body-parser');
-// 소켓
-const socketIo = require('socket.io');
-// 크로스도메인 정의
+const cookieParser = require('cookie-parser');
+const express = require('express');
+const app = express();
 const cors = require('cors');
-// api 통신을용 파일호출
+const path = require('path');
+const http = require('http');
+const port = process.env.PORT || '5555';
+const debug = require('debug')('authserver:server');
 const api = require('./api');
-// api url 검증 파일 호출
-// const redirect = require('./middleware/redirect');
 
-const io = socketIo(server); // < Interesting!
+const moment = require('moment');
+require('moment-timezone');
+moment.tz.setDefault("Asia/Seoul");
 
-// bodyparser : post 통신용
-app.use(bodyParser.urlencoded({
-    extended: true,
-    limit: '50mb'
-}));
-app.use(bodyParser.json());
-
+// api 파일호출
+app.set('port', port);
+// 크로스도메인
 app.use(cors());
-//이미지 파일 & 파일 호출을 위한 static 경로 선언
-// app.use((req, res, next) => {
-//     res.header('Access-Control-Allow-Origin', '*');
-//     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-//     next();
-// });
+// post
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-//app.use(redirect);
-
-app.use('/uploads', express.static('uploads'));
+// restful용 api 라우트
 app.use('/api', (req, res, next)=>{
-    req.io = io;
-    next();
+  next();
 }, api);
 
-app.listen(portNo, () => {
-    console.log(`start`)
-  })
-// setInterval(async()=>{
-//     var orderSel = await marketController.orderSel();
-//     io.emit('orderSel', orderSel);
-// }, 1000);
+// error handler
+app.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  // render the error page
+  res.status(err.status || 500);
+  res.render('error');
+});
+
+var server = http.createServer(app);
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
 
 
-exports.server = server;
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  var bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+  var addr = server.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+}
 
