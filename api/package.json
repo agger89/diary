@@ -10,12 +10,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "babel-plugin-inline-import-graphql-ast": "^2.4.1",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "graphql-yoga": "^1.18.3",
     "mongoose": "^5.9.9",
     "mysql2": "^2.1.0",
+    "prisma": "^1.34.10",
     "sequelize": "^5.21.6",
     "socket.io": "^2.3.0",
     "supervisor": "^0.12.0"

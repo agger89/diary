@@ -1,0 +1,5 @@
+{
+    "plugins": [
+        "inline-import-graphql-ast"
+    ]
+}
