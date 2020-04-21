@@ -7,5 +7,11 @@ type Query {
 type Mutation {
   post(url: String!, description: String!): Link!
 }
+
+type Link {
+  id: ID!
+  description: String!
+  url: String!
+}
 `
 module.exports = typeDefs;
