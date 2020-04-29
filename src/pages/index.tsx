@@ -1,20 +1,12 @@
-import { NextPage } from 'next'
-import Link from 'next/link';
-// import { useQuery } from '@apollo/react-hooks'
-// import gql from 'graphql-tag'
+import { FunctionComponent, useEffect } from 'react'
+import Router from 'next/router'
 
-const IndexPage: NextPage = () => {
-  return (
-    <>
-      <div>index page</div>
-      <Link href="/login">
-        login
-      </Link>
-      <Link href="/mypage">
-        mypage
-      </Link>
-    </>
-  )
+const IndexPage: FunctionComponent = () => {
+  useEffect(() => {
+    Router.push('/diary')
+  }, [])
+
+  return null
 }
 
 export default IndexPage
