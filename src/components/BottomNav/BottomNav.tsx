@@ -15,12 +15,17 @@ const BottomNav: FunctionComponent = () => {
   return (
     <BottomNavBlock>
       <li>
-        <Link href="/">
+        <Link href="/diary">
+          <a>Diary</a>
+        </Link>
+      </li>
+      <li>
+        <Link href="/hashtag">
           <a>HashTag</a>
         </Link>
       </li>
       <li>
-        <Link href="/">
+        <Link href="/write">
           <a>Write</a>
         </Link>
       </li>
