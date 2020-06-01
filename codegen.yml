@@ -1,0 +1,19 @@
+overwrite: true
+schema: 'http://13.125.145.159:4000'
+documents:
+  - 'src/**/*.{ts,tsx}'
+generates:
+  src/generated/graphql.ts:
+    plugins:
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-react-apollo'
+    config:
+      scalars:
+        Date: Date
+        PhoneNumber: string
+      namingConvention:
+        enumValues: change-case#constantCase
+      withComponent: false
+      withHOC: false
+      withHooks: true
