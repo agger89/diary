@@ -1,4 +1,6 @@
 import React, { FunctionComponent } from 'react'
+import gql from 'graphql-tag'
+import { useListPostsQuery } from 'generated/graphql'
 import Link from 'next/link'
 import styled from 'styled-components'
 
@@ -28,51 +30,39 @@ interface ListProps {
 }
 
 const List: FunctionComponent<ListProps> = ({ hashtag }) => {
+  const { data } = useListPostsQuery()
+  const posts = data?.posts
+
   const href = hashtag ? '/hashtagResult' : '/diary'
 
   return (
     <ListBlock>
-      <Contents>
-        <Link href={href}>
-          <Wrap>
-            <TextGroup>
-              <h5>#곰돌이의꿈</h5>
-              <div>
-                <span>이야기 56</span>
-                <span>구독 33</span>
-              </div>
-            </TextGroup>
-          </Wrap>
-        </Link>
-      </Contents>
-      <Contents>
-        <Link href={href}>
-          <Wrap>
-            <TextGroup>
-              <h5>#곰돌이의꿈</h5>
-              <div>
-                <span>이야기 56</span>
-                <span>구독 33</span>
-              </div>
-            </TextGroup>
-          </Wrap>
-        </Link>
-      </Contents>
-      <Contents>
-        <Link href={href}>
-          <Wrap>
-            <TextGroup>
-              <h5>#곰돌이의꿈</h5>
-              <div>
-                <span>이야기 56</span>
-                <span>구독 33</span>
-              </div>
-            </TextGroup>
-          </Wrap>
-        </Link>
-      </Contents>
+      {posts?.map((post) => (
+        <Contents key={post.id}>
+          <Link href={href}>
+            <Wrap>
+              <TextGroup>
+                <h5>{post.title}</h5>
+                <div>
+                  <span>이야기 56</span>
+                  <span>구독 33</span>
+                </div>
+              </TextGroup>
+            </Wrap>
+          </Link>
+        </Contents>
+      ))}
     </ListBlock>
   )
 }
 
 export default List
+
+gql`
+  query ListPosts {
+    posts {
+      id
+      title
+    }
+  }
+`
