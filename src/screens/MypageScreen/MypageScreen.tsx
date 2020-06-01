@@ -7,6 +7,8 @@ import React, {
   FormEvent,
 } from 'react'
 import styled from 'styled-components'
+import gql from 'graphql-tag'
+import { useMypageScreenMembersQuery } from 'generated/graphql'
 
 import MypageHeader from './MypageHeader'
 import MypageStory from './MypageStory'
@@ -14,7 +16,7 @@ import MypageTag from './MypageTag'
 import MypageComment from './MypageComment'
 import MypageBookmark from './MypageBookmark'
 
-const data = [
+const TabItems = [
   { id: 1, value: 'story', title: '이야기' },
   { id: 2, value: 'tag', title: '태그' },
   { id: 3, value: 'comment', title: '내 댓글' },
@@ -23,17 +25,21 @@ const data = [
 
 const MypageBlock = styled.div``
 
-const TabList = styled.ul`
+const TabGroup = styled.ul`
   display: flex;
   justify-content: space-around;
 `
 
-const ListItem = styled.li`
+const TabItem = styled.li`
   color: ${(props) => props.value === props.active && 'blue'};
 `
 
 const MypageScreen: FunctionComponent = () => {
   const [activeTab, setActiveTab] = useState<string>('story')
+
+  const { data } = useMypageScreenMembersQuery()
+  const members = data?.members
+  console.log(members)
 
   const renderContent = () => {
     switch (activeTab) {
@@ -59,21 +65,30 @@ const MypageScreen: FunctionComponent = () => {
   return (
     <MypageBlock>
       <MypageHeader />
-      <TabList>
-        {data.map((item) => (
-          <ListItem
+      <TabGroup>
+        {TabItems.map((item) => (
+          <TabItem
             key={item.id}
             value={item.value}
             active={activeTab}
             onClick={() => handleClick(item.value)}
           >
             {item.title}
-          </ListItem>
+          </TabItem>
         ))}
-      </TabList>
+      </TabGroup>
       {renderContent()}
     </MypageBlock>
   )
 }
 
 export default MypageScreen
+
+gql`
+  query MypageScreenMembers {
+    members {
+      id
+      name
+    }
+  }
+`
