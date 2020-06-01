@@ -1,4 +1,7 @@
-import React, { FunctionComponent } from 'react'
+import React, { FunctionComponent, useState } from 'react'
+import gql from 'graphql-tag'
+import { useWriteScreenCreateOnePostMutation } from 'generated/graphql'
+import { useForm } from 'react-hook-form'
 import Link from 'next/link'
 import styled from 'styled-components'
 
@@ -35,6 +38,32 @@ const WriteInputWrap = styled.div`
 `
 
 const WriteScreen: FunctionComponent = () => {
+  const { handleSubmit, register, errors, reset } = useForm()
+
+  const [
+    createOnepost,
+    { loading: onePostMutaionLoading, error: onePostMutaionError },
+  ] = useWriteScreenCreateOnePostMutation()
+
+  const writeForm = ({ title, content }, e) => {
+    e.target.reset() // reset after form submit
+    const data = {
+      title: title,
+      text: content,
+      member: {
+        connect: {
+          id: 1,
+        },
+      },
+    }
+
+    createOnepost({
+      variables: {
+        data,
+      },
+    })
+  }
+
   return (
     <WriteBlock>
       <Header>
@@ -47,10 +76,34 @@ const WriteScreen: FunctionComponent = () => {
         <SaveButton>저장</SaveButton>
       </Header>
       <WriteInputWrap>
-        <input type="text" placeholder="생각을 자유롭게 적어보세요." />
+        <form onSubmit={handleSubmit(writeForm)}>
+          <input
+            type="text"
+            name="title"
+            ref={register}
+            placeholder="제목을 적으세요."
+          />
+          {errors.title && errors.title.message}
+          <input
+            type="text"
+            name="content"
+            ref={register}
+            placeholder="생각을 자유롭게 적어보세요."
+          />
+          {errors.content && errors.content.message}
+          <button type="submit">Submit</button>
+        </form>
       </WriteInputWrap>
     </WriteBlock>
   )
 }
 
 export default WriteScreen
+
+gql`
+  mutation WriteScreenCreateOnePost($data: postCreateInput!) {
+    createOnepost(data: $data) {
+      id
+    }
+  }
+`
