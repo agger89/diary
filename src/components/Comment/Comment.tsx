@@ -1,4 +1,7 @@
 import React, { FunctionComponent } from 'react'
+import gql from 'graphql-tag'
+import { useCommentsQuery, useCreateOneCommentMutation } from 'generated/graphql'
+import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 
 const CommentBlock = styled.div`
@@ -39,34 +42,91 @@ const LikeButton = styled.span`
   text-align: center;
 `
 
+const CommentFormBlock = styled.div``
+
 const Comment: FunctionComponent = () => {
+  const { handleSubmit, register, errors, reset } = useForm()
+
+  const { data } = useCommentsQuery()
+  const comments = data?.comments
+
+  const [
+    createOnecomment,
+    { loading: onePostMutaionLoading, error: onePostMutaionError },
+  ] = useCreateOneCommentMutation()
+
+  const commentForm = ({ comment }) => {
+    reset() // reset after form submit
+
+    const data = {
+      text: comment,
+      member: {
+        connect: {
+          id: 1,
+        },
+      },
+      post: {
+        connect: {
+          id: 1,
+        },
+      },
+    }
+
+    createOnecomment({
+      variables: {
+        data,
+      },
+    })
+  }
+
   return (
     <CommentBlock>
       <ShareButtonBlock>
-        <a href="javascript:void(0)">
+        <a>
           <i>icon</i>
           <span>공유하기</span>
         </a>
       </ShareButtonBlock>
       <CommentListBlock>
-        <li>
-          <ProfileImage>image</ProfileImage>
-          <Content>댓글 댓글</Content>
-          <LikeButton>image</LikeButton>
-        </li>
-        <li>
-          <ProfileImage>image</ProfileImage>
-          <Content>댓글 댓글</Content>
-          <LikeButton>image</LikeButton>
-        </li>
-        <li>
-          <ProfileImage>image</ProfileImage>
-          <Content>댓글 댓글</Content>
-          <LikeButton>image</LikeButton>
-        </li>
+        {/* 등록한 댓글 바로 보여주기 (새로고침??? 하지 않고) */}
+        {comments?.map((comment) => (
+          <li key={comment.id}>
+            <ProfileImage>image</ProfileImage>
+            <Content>{comment.text}</Content>
+            <LikeButton>image</LikeButton>
+          </li>
+        ))}
       </CommentListBlock>
+      <CommentFormBlock>
+        <form onSubmit={handleSubmit(commentForm)}>
+          <textarea
+            name="comment"
+            ref={register}
+            placeholder="따뜻한 한마디를 남겨보세요."
+          />
+          {errors.comment && errors.comment.message}
+          <button type="submit">등록</button>
+        </form>
+      </CommentFormBlock>
     </CommentBlock>
   )
 }
 
 export default Comment
+
+gql`
+  query Comments {
+    comments {
+      id
+      text
+    }
+  }
+`
+
+gql`
+  mutation CreateOneComment($data: commentCreateInput!) {
+    createOnecomment(data: $data) {
+      id
+    }
+  }
+`
