@@ -30,8 +30,8 @@ const BottomNav: FunctionComponent = () => {
         </Link>
       </li>
       <li>
-        <Link href="/">
-          <a>Notification</a>
+        <Link href="/notice">
+          <a>Notice</a>
         </Link>
       </li>
       <li>
