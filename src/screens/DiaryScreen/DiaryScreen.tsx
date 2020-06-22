@@ -1,7 +1,6 @@
-import React, { FunctionComponent, useState, useCallback } from 'react'
+import React, { FunctionComponent, useState, useCallback, FormEvent } from 'react'
 import Link from 'next/link'
 import styled from 'styled-components'
-
 import Comment from 'components/Comment'
 
 const DiaryBlock = styled.div`
@@ -9,7 +8,7 @@ const DiaryBlock = styled.div`
 `
 
 // 변수 네이밍 수정
-const Text = styled.div`
+const TextGroup = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -17,14 +16,13 @@ const Text = styled.div`
   border-bottom: 1px solid #999;
 `
 
+const Text = styled.div``
+const Hashtag = styled.div``
+
 // 변수 네이밍 수정
 const Bottom = styled.div`
   display: flex;
   height: 300px;
-`
-
-const LinkButton = styled(Link)`
-  flex: none;
 `
 
 const ButtonGroup = styled.div`
@@ -32,28 +30,35 @@ const ButtonGroup = styled.div`
 `
 
 const DiaryScreen: FunctionComponent = () => {
-  const [showComment, setShowComment] = useState<boolean>(false)
+  const [showComment, setShowComment] = useState(false)
 
-  const handleClick = useCallback((value: boolean) => {
-    setShowComment(value)
-  }, [])
+  const handleClickShowComment = () => {
+    setShowComment(true)
+  }
+
+  const handleClickHideComment = () => {
+    setShowComment(false)
+  }
 
   return (
     <DiaryBlock>
-      <div>
-        <Text onClick={() => handleClick(false)}>
-          <p>text text text text text text text text text text</p>
-        </Text>
-        <Bottom>
-          <LinkButton href="/diaryList">
-            <a>Diary</a>
-          </LinkButton>
-          <ButtonGroup>
-            <button>Like</button>
-            <button onClick={() => handleClick(true)}>comment</button>
-          </ButtonGroup>
-        </Bottom>
-      </div>
+      <TextGroup onClick={handleClickHideComment}>
+        <Text>text text text text text text text text text text</Text>
+        <Hashtag>
+          <Link href="/hashtag">
+            <a># 해시태그</a>
+          </Link>
+        </Hashtag>
+      </TextGroup>
+      <Bottom>
+        <Link href="/diaryList">
+          <a>Diary</a>
+        </Link>
+        <ButtonGroup>
+          <button>Like</button>
+          <button onClick={handleClickShowComment}>comment</button>
+        </ButtonGroup>
+      </Bottom>
       {showComment && <Comment />}
     </DiaryBlock>
   )

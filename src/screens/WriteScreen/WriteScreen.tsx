@@ -46,7 +46,8 @@ const WriteScreen: FunctionComponent = () => {
   ] = useWriteScreenCreateOnePostMutation()
 
   const writeForm = ({ title, content }, e) => {
-    e.target.reset() // reset after form submit
+    reset() // reset after form submit
+
     const data = {
       title: title,
       text: content,

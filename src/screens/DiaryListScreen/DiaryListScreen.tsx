@@ -1,6 +1,5 @@
 import React, { FunctionComponent } from 'react'
 import styled from 'styled-components'
-
 import List from 'components/List'
 
 const DiaryListBlock = styled.div``
