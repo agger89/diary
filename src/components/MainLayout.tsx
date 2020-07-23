@@ -6,6 +6,7 @@ import BottomNav from './BottomNav'
 const LayoutBlock = styled.div`
   position: relative;
   width: 600px;
+  height: 860px;
   margin: 0 auto;
 `
 

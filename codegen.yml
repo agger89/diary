@@ -1,5 +1,5 @@
 overwrite: true
-schema: 'http://13.125.145.159:4000'
+schema: 'http://15.165.204.51:4000'
 documents:
   - 'src/**/*.{ts,tsx}'
 generates:
