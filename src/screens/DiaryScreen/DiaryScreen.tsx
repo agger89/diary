@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useState } from 'react'
 import gql from 'graphql-tag'
-// import { useDiaryScreenPostQuery } from 'generated/graphql'
+import { useDiaryScreenPostQuery } from 'generated/graphql'
 import Link from 'next/link'
 import styled from 'styled-components'
 import {
@@ -17,7 +17,7 @@ const DiaryBlock = styled.div`
   width: 600px;
   padding: 24px 32px 24px;
   border: 1px solid #f4f5f61f;
-  .wrap {
+  .comment-write-wrap {
     position: fixed;
     top: 0;
     right: 0;
@@ -198,22 +198,27 @@ const CustomLikeButton = styled(LikeIcon)`
 
 const DiaryScreen: FunctionComponent = () => {
   const [like, setLike] = useState(false)
-  const [toggleCommentFormModal, setToggleCommentFormModal] = useState<boolean>(
+  const [toggleCommentWriteFormModal, setToggleCommentWriteFormModal] = useState<
+    boolean
+  >(false)
+  const [toggleCommentDeleteFormModal, setToggleCommentDeleteFormModal] = useState(
     false,
   )
-  // const { data } = useDiaryScreenPostQuery({
-  //   // 객체 말고 숫자로 요청하면 안되는지 호이한테 물어보자
-  //     id: {
-  //       id: 1,
-  //     },
-  //   },
-  // })
 
-  // if (!data) {
-  //   return null
-  // }
+  const { data } = useDiaryScreenPostQuery({
+    variables: {
+      id: {
+        id: 1,
+      },
+    },
+  })
 
-  // const post = data?.post
+  if (!data) {
+    return null
+  }
+
+  const post = data?.post
+  console.log('post', post)
 
   const handleClickLike = () => {
     setLike(!like)
@@ -222,8 +227,17 @@ const DiaryScreen: FunctionComponent = () => {
   return (
     <>
       <DiaryBlock>
-        {toggleCommentFormModal && (
-          <div className="wrap" onClick={() => setToggleCommentFormModal(false)} />
+        {toggleCommentWriteFormModal && (
+          <div
+            className="comment-write-wrap"
+            onClick={() => setToggleCommentWriteFormModal(false)}
+          />
+        )}
+        {toggleCommentDeleteFormModal && (
+          <div
+            className="comment-write-wrap"
+            onClick={() => setToggleCommentDeleteFormModal(false)}
+          />
         )}
         <DiaryHeaderBlock>
           <ProfileImage name="mark_zuckerberg" width={30} height={30} />
@@ -233,19 +247,15 @@ const DiaryScreen: FunctionComponent = () => {
           </ShareButtonBlock>
         </DiaryHeaderBlock>
         <DiaryTitleBlock>
-          <div className="title">
-            The most valuable software developer skills to get hired now
-          </div>
+          <div className="title">{post.title}</div>
           <LocationHashtagBlock>
             <LocationTimeInfoBlock>
               <Link href="/diaryList">
                 <>
                   <MapIcon />
-                  <span>어딘가 -</span>
-                  <span>11:43 AM</span>
+                  <span>{format(new Date(post.create_date), 'MMM dd, yyyy')}</span>
                 </>
               </Link>
-              {/* <span>{format(new Date(post.create_date), 'HH:mm a')}</span> */}
             </LocationTimeInfoBlock>
             <HashtagBlock>
               <Link href="/hashtag">
@@ -258,34 +268,34 @@ const DiaryScreen: FunctionComponent = () => {
         </DiaryTitleBlock>
         <DiaryBodyBlock>
           <DiaryBodyContentBlock>
-            {/* <ContentText>{post.ContentText}</ContentText> */}
             <div className="content-image" />
           </DiaryBodyContentBlock>
         </DiaryBodyBlock>
         <DiaryBottomBlock>
           <LikeCommentInfoBlock>
-            <span onClick={handleClickLike}>
-              8 <span className="text">Like</span>
-              {/* {post.like_num} */}
+            <span>
+              {post.like_num} <span className="text">Like</span>
             </span>
             <span>
-              22 <span className="text">Comments</span>
-              {/* {post.comments_num} */}
+              {post.comment.length} <span className="text">Comments</span>
             </span>
           </LikeCommentInfoBlock>
           <LikeCommentButtonBlock>
             <button className="like" onClick={handleClickLike}>
               <CustomLikeButton toggleLike={like} /> Like
             </button>
-            <button onClick={() => setToggleCommentFormModal(true)}>
+            <button onClick={() => setToggleCommentWriteFormModal(true)}>
               <CommentIcon />
               Comment
             </button>
           </LikeCommentButtonBlock>
         </DiaryBottomBlock>
         <Comment
-          toggleCommentFormModal={toggleCommentFormModal}
-          onToggleCommentFormModal={setToggleCommentFormModal}
+          toggleCommentWriteFormModal={toggleCommentWriteFormModal}
+          onToggleCommentWriteFormModal={setToggleCommentWriteFormModal}
+          toggleCommentDeleteFormModal={toggleCommentDeleteFormModal}
+          onToggleCommentDeleteFormModal={setToggleCommentDeleteFormModal}
+          comments={post.comment}
         />
       </DiaryBlock>
     </>
@@ -294,15 +304,26 @@ const DiaryScreen: FunctionComponent = () => {
 
 export default DiaryScreen
 
-// gql`
-//   query DiaryScreenPost($id: postWhereUniqueInput!) {
-//     post(where: $id) {
-//       id
-//       title
-//       text
-//       like_num
-//       comments_num
-//       create_date
-//     }
-//   }
-// `
+gql`
+  query DiaryScreenPost($id: postWhereUniqueInput!) {
+    post(where: $id) {
+      id
+      title
+      text
+      image
+      like_num
+      comments_num
+      comment {
+        id
+        text
+        member {
+          name
+        }
+        like_num
+        comments_num
+        create_date
+      }
+      create_date
+    }
+  }
+`

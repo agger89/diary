@@ -8,7 +8,7 @@ import React, {
 } from 'react'
 import styled from 'styled-components'
 import gql from 'graphql-tag'
-import { useMypageScreenMembersQuery } from 'generated/graphql'
+// import { useMypageScreenMembersQuery } from 'generated/graphql'
 
 import MypageHeader from './MypageHeader'
 import MypageArticle from './MypageArticle'

@@ -26,8 +26,7 @@ export default (MyApp: typeof App) => {
         appProps = await App.getInitialProps(ctx)
       }
 
-      // const baseURL = 'http://15.165.204.51:4000'
-      const baseURL = ''
+      const baseURL = 'http://15.165.204.51:4000'
 
       // Run all GraphQL queries in the component tree
       // and extract the resulting data

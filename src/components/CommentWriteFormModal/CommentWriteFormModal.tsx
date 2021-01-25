@@ -1,8 +1,10 @@
-import React, { FunctionComponent, useState } from 'react'
+import React, { FunctionComponent, useState, ChangeEvent } from 'react'
+import gql from 'graphql-tag'
+import { useCreateOneCommentMutation } from 'generated/graphql'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 
-const CommentFormModalBlock = styled.div`
+const CommentWriteFormModalBlock = styled.div`
   position: fixed;
   top: 50%;
   transform: translateY(-50%);
@@ -146,21 +148,45 @@ const SubmitBlock = styled.div`
   }
 `
 
-interface CommentFormModalProps {
-  onCommentSubmit: (comment: any) => void
-  onToggleCommentFormModal: (value: boolean) => void
+interface CommentWriteFormModalProps {
+  onToggleCommentWriteFormModal: (value: boolean) => void
 }
-const CommentFormModal: FunctionComponent<CommentFormModalProps> = ({
-  onCommentSubmit,
-  onToggleCommentFormModal,
+
+const CommentWriteFormModal: FunctionComponent<CommentWriteFormModalProps> = ({
+  onToggleCommentWriteFormModal,
 }) => {
-  const { handleSubmit, register, errors, reset } = useForm()
-  const [comment, setComment] = useState()
+  const { handleSubmit, register } = useForm()
   const [activeSubmitButton, setActiveSubmitButton] = useState(false)
 
-  const handleCommentChange = (e) => {
-    setComment(e.target.value)
+  const [createOnecomment] = useCreateOneCommentMutation({
+    onCompleted: () => {
+      onToggleCommentWriteFormModal(false)
+    },
+  })
 
+  const onCommentSubmit = ({ comment }) => {
+    const commentData = {
+      text: comment,
+      member: {
+        connect: {
+          id: 1,
+        },
+      },
+      post: {
+        connect: {
+          id: 1,
+        },
+      },
+    }
+
+    createOnecomment({
+      variables: {
+        commentData,
+      },
+    })
+  }
+
+  const handleCommentChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     if (e.target.value.length > 0) {
       setActiveSubmitButton(true)
     } else {
@@ -169,7 +195,7 @@ const CommentFormModal: FunctionComponent<CommentFormModalProps> = ({
   }
 
   return (
-    <CommentFormModalBlock>
+    <CommentWriteFormModalBlock>
       <HeaderBlock>
         <ProfileBlock>
           <ProfileImage name="mark_zuckerberg" />
@@ -195,15 +221,13 @@ const CommentFormModal: FunctionComponent<CommentFormModalProps> = ({
             <textarea
               name="comment"
               ref={register}
-              value={comment}
               placeholder="Write your comment..."
               onChange={handleCommentChange}
             />
-            {errors.comment && errors.comment.message}
             <SubmitBlock activeSubmitButton={activeSubmitButton}>
               <span
                 className="button cancel-button"
-                onClick={() => onToggleCommentFormModal(false)}
+                onClick={() => onToggleCommentWriteFormModal(false)}
               >
                 Cancel
               </span>
@@ -214,8 +238,16 @@ const CommentFormModal: FunctionComponent<CommentFormModalProps> = ({
           </form>
         </FormBlock>
       </BodyBlock>
-    </CommentFormModalBlock>
+    </CommentWriteFormModalBlock>
   )
 }
 
-export default CommentFormModal
+export default CommentWriteFormModal
+
+gql`
+  mutation CreateOneComment($commentData: commentCreateInput!) {
+    createOnecomment(data: $commentData) {
+      id
+    }
+  }
+`

@@ -1,17 +1,17 @@
 import React, { FunctionComponent, useState } from 'react'
 import gql from 'graphql-tag'
-import { useCommentsQuery, useCreateOneCommentMutation } from 'generated/graphql'
-import { useForm } from 'react-hook-form'
+import { useDeleteOneCommentMutation } from 'generated/graphql'
 import styled from 'styled-components'
 import { HeartFill as LikeIcon } from '@styled-icons/bootstrap'
 import {
   CommentDetail as CommentIcon,
-  UpArrowAlt as SubmitIcon,
+  Trash as TrashIcon,
 } from '@styled-icons/boxicons-solid'
-import CommentFormModal from '../CommentFormModal'
+import { format } from 'date-fns'
+import { sortBy } from 'lodash'
+import CommentWriteFormModal from '../CommentWriteFormModal'
+import CommentDeleteFormModal from '../CommentDeleteFormModal'
 import { ProfileImage } from '../../screens/DiaryScreen/DiaryScreen'
-
-const CommentBlock = styled.div``
 
 const CommentListBlock = styled.ul`
   margin: 16px 0 40px;
@@ -51,6 +51,7 @@ const ContentBlock = styled.div`
   }
 `
 const LikeCommentButtonBlock = styled.div`
+  display: flex;
   padding: 4px 0 26px;
   button {
     display: inline-block;
@@ -78,8 +79,14 @@ const LikeCommentButtonBlock = styled.div`
       }
     }
   }
-  .like {
+  .like-button {
     margin-right: 24px;
+  }
+  .delete-button {
+    margin-left: auto;
+    svg {
+      margin-right: 0;
+    }
   }
 `
 const CustomLikeButton = styled(LikeIcon)`
@@ -99,116 +106,101 @@ const CommentWriteBlock = styled.div`
   cursor: pointer;
 `
 interface CommentProps {
-  toggleCommentFormModal: boolean
-  onToggleCommentFormModal: (value: boolean) => void
+  toggleCommentWriteFormModal: boolean
+  onToggleCommentWriteFormModal: (value: boolean) => void
+  toggleCommentDeleteFormModal: boolean
+  onToggleCommentDeleteFormModal: (value: boolean) => void
+  comments: any
 }
 
 const Comment: FunctionComponent<CommentProps> = ({
-  toggleCommentFormModal,
-  onToggleCommentFormModal,
+  toggleCommentWriteFormModal,
+  onToggleCommentWriteFormModal,
+  toggleCommentDeleteFormModal,
+  onToggleCommentDeleteFormModal,
+  comments,
 }) => {
   const [like, setLike] = useState(false)
-  const { handleSubmit, register, errors, reset } = useForm()
-
-  // const { data } = useCommentsQuery()
-  // const comments = data?.comments
-
-  const [
-    createOnecomment,
-    { loading: onePostMutaionLoading, error: onePostMutaionError },
-  ] = useCreateOneCommentMutation()
-
-  const handleCommentSubmit = ({ comment }) => {
-    reset() // reset after form submit
-
-    const data = {
-      text: comment,
-      member: {
-        connect: {
-          id: 1,
-        },
-      },
-      post: {
-        connect: {
-          id: 1,
-        },
-      },
-    }
-
-    createOnecomment({
-      variables: {
-        data,
-      },
-    })
-  }
+  const [deleteOnecomment] = useDeleteOneCommentMutation()
 
   const handleClickLike = () => {
     setLike(!like)
   }
 
+  const handleDeleteComment = (commentId: number) => {
+    console.log('commentId', commentId)
+    deleteOnecomment({
+      variables: {
+        id: {
+          id: commentId,
+        },
+      },
+    })
+  }
+
+  const sortedComments = sortBy(comments).reverse()
+
   return (
-    <CommentBlock>
+    <>
       <CommentListBlock>
-        {/* 등록한 댓글 바로 보여주기 (새로고침??? 하지 않고) */}
-        {/* {comments?.map((comment) => (
+        {sortedComments.map((comment) => (
           <li key={comment.id}>
-            <ProfileImage>image</ProfileImage>
-            <Content>{comment.text}</Content>
-            <LikeButton>image</LikeButton>
+            <ProfileBlock>
+              <ProfileImage name="mark_zuckerberg" />
+              <NameBlock>
+                <div className="name">{comment.member.name}</div>
+                <div className="date">
+                  {format(new Date(comment.create_date), 'MMM dd')}
+                </div>
+              </NameBlock>
+            </ProfileBlock>
+            <ContentBlock>
+              <p>{comment.text}</p>
+            </ContentBlock>
+            <LikeCommentButtonBlock>
+              <button className="like-button" onClick={handleClickLike}>
+                <CustomLikeButton toggleLike={like} />
+                <span className="count">{comment.like_num}</span>
+              </button>
+              <button onClick={() => onToggleCommentWriteFormModal(true)}>
+                <CommentIcon /> <span className="count">{comment.comments_num}</span>
+              </button>
+              <button
+                className="delete-button"
+                onClick={() => handleDeleteComment(comment.id)}
+              >
+                <TrashIcon />
+              </button>
+            </LikeCommentButtonBlock>
+            {toggleCommentDeleteFormModal && (
+              <CommentDeleteFormModal
+                onDeleteComment={() => handleDeleteComment(comment.id)}
+                onToggleCommentDeleteFormModal={onToggleCommentDeleteFormModal}
+              />
+            )}
           </li>
-        ))} */}
-        <li>
-          <ProfileBlock>
-            <ProfileImage name="mark_zuckerberg" />
-            <NameBlock>
-              <div className="name">Mark Zuckerberg</div>
-              <div className="date">Jan 11</div>
-            </NameBlock>
-          </ProfileBlock>
-          <ContentBlock>
-            <p>That's show me what i have to change in my career</p>
-          </ContentBlock>
-          <LikeCommentButtonBlock>
-            <button className="like" onClick={handleClickLike}>
-              <CustomLikeButton toggleLike={like} />
-              <span className="count">3</span>
-            </button>
-            <button onClick={() => onToggleCommentFormModal(true)}>
-              <CommentIcon /> <span className="count">1</span>
-            </button>
-          </LikeCommentButtonBlock>
-        </li>
+        ))}
       </CommentListBlock>
-      <CommentWriteBlock onClick={() => onToggleCommentFormModal(true)}>
+      <CommentWriteBlock onClick={() => onToggleCommentWriteFormModal(true)}>
         <ProfileBlock>
           <ProfileImage name="steve_jobs" width={32} height={32} />
           <p>Write your comment...</p>
         </ProfileBlock>
       </CommentWriteBlock>
-      {toggleCommentFormModal && (
-        <CommentFormModal
-          onToggleCommentFormModal={onToggleCommentFormModal}
-          onCommentSubmit={handleCommentSubmit}
+      {toggleCommentWriteFormModal && (
+        <CommentWriteFormModal
+          onToggleCommentWriteFormModal={onToggleCommentWriteFormModal}
         />
       )}
-    </CommentBlock>
+    </>
   )
 }
 
 export default Comment
 
 gql`
-  query Comments {
-    comments {
-      id
-      text
-    }
-  }
-`
-
-gql`
-  mutation CreateOneComment($data: commentCreateInput!) {
-    createOnecomment(data: $data) {
+  mutation DeleteOneComment($id: commentWhereUniqueInput!) {
+    deleteOnecomment(where: $id) {
       id
     }
   }
