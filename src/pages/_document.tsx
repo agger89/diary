@@ -44,10 +44,6 @@ class MyDocument extends Document<DocumentProps> {
     return (
       <Html>
         <Head>
-          <meta
-            http-equiv="Content-Security-Policy"
-            content="upgrade-insecure-requests"
-          />
           {uaIsIE && ( // IE only, not Edge or others
             <>
               <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/7.7.0/polyfill.min.js" />
@@ -58,6 +54,10 @@ class MyDocument extends Document<DocumentProps> {
           <meta
             name="viewport"
             content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
+          />
+          <meta
+            http-equiv="Content-Security-Policy"
+            content="upgrade-insecure-requests"
           />
           <link
             rel="stylesheet"
