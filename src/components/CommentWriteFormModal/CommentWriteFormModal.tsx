@@ -3,6 +3,7 @@ import gql from 'graphql-tag'
 import { useCreateOneCommentMutation } from 'generated/graphql'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
+import CommentDiscardModal from './CommentDiscardModal'
 
 const CommentWriteFormModalBlock = styled.div`
   position: fixed;
@@ -150,12 +151,23 @@ const SubmitBlock = styled.div`
 
 interface CommentWriteFormModalProps {
   onToggleCommentWriteFormModal: (value: boolean) => void
+  showCommentDiscardModal: boolean
+  onShowCommentDiscardModal: (value: boolean) => void
+  comment: string
+  onComment: (value: string) => void
+  onCloseCommentWriteFormModal: () => void
 }
 
 const CommentWriteFormModal: FunctionComponent<CommentWriteFormModalProps> = ({
   onToggleCommentWriteFormModal,
+  showCommentDiscardModal,
+  onShowCommentDiscardModal,
+  comment,
+  onComment,
+  onCloseCommentWriteFormModal,
 }) => {
   const { handleSubmit, register } = useForm()
+
   const [activeSubmitButton, setActiveSubmitButton] = useState(false)
 
   const [createOnecomment] = useCreateOneCommentMutation({
@@ -187,6 +199,8 @@ const CommentWriteFormModal: FunctionComponent<CommentWriteFormModalProps> = ({
   }
 
   const handleCommentChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    onComment(e.target.value)
+
     if (e.target.value.length > 0) {
       setActiveSubmitButton(true)
     } else {
@@ -219,6 +233,7 @@ const CommentWriteFormModal: FunctionComponent<CommentWriteFormModalProps> = ({
           <ProfileImage name="steve_jobs" width={30} height={30} />
           <form onSubmit={handleSubmit(onCommentSubmit)}>
             <textarea
+              value={comment}
               name="comment"
               ref={register}
               placeholder="Write your comment..."
@@ -227,7 +242,7 @@ const CommentWriteFormModal: FunctionComponent<CommentWriteFormModalProps> = ({
             <SubmitBlock activeSubmitButton={activeSubmitButton}>
               <span
                 className="button cancel-button"
-                onClick={() => onToggleCommentWriteFormModal(false)}
+                onClick={onCloseCommentWriteFormModal}
               >
                 Cancel
               </span>
@@ -238,6 +253,13 @@ const CommentWriteFormModal: FunctionComponent<CommentWriteFormModalProps> = ({
           </form>
         </FormBlock>
       </BodyBlock>
+      {showCommentDiscardModal && (
+        <CommentDiscardModal
+          onToggleCommentWriteFormModal={onToggleCommentWriteFormModal}
+          onShowCommentDiscardModal={onShowCommentDiscardModal}
+          onComment={onComment}
+        />
+      )}
     </CommentWriteFormModalBlock>
   )
 }

@@ -111,6 +111,11 @@ interface CommentProps {
   toggleCommentDeleteFormModal: boolean
   onToggleCommentDeleteFormModal: (value: boolean) => void
   comments: any
+  showCommentDiscardModal: boolean
+  onShowCommentDiscardModal: (value: boolean) => void
+  comment: string
+  onComment: (value: string) => void
+  onCloseCommentWriteFormModal: () => void
 }
 
 const Comment: FunctionComponent<CommentProps> = ({
@@ -119,6 +124,11 @@ const Comment: FunctionComponent<CommentProps> = ({
   toggleCommentDeleteFormModal,
   onToggleCommentDeleteFormModal,
   comments,
+  showCommentDiscardModal,
+  onShowCommentDiscardModal,
+  comment,
+  onComment,
+  onCloseCommentWriteFormModal,
 }) => {
   const [like, setLike] = useState(false)
   const [deleteOnecomment] = useDeleteOneCommentMutation()
@@ -189,7 +199,12 @@ const Comment: FunctionComponent<CommentProps> = ({
       </CommentWriteBlock>
       {toggleCommentWriteFormModal && (
         <CommentWriteFormModal
+          showCommentDiscardModal={showCommentDiscardModal}
+          onShowCommentDiscardModal={onShowCommentDiscardModal}
           onToggleCommentWriteFormModal={onToggleCommentWriteFormModal}
+          comment={comment}
+          onComment={onComment}
+          onCloseCommentWriteFormModal={onCloseCommentWriteFormModal}
         />
       )}
     </>

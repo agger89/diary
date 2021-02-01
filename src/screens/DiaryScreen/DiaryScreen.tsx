@@ -204,6 +204,8 @@ const DiaryScreen: FunctionComponent = () => {
   const [toggleCommentDeleteFormModal, setToggleCommentDeleteFormModal] = useState(
     false,
   )
+  const [comment, setComment] = useState('')
+  const [showCommentDiscardModal, setShowCommentDiscardModal] = useState(false)
 
   const { data } = useDiaryScreenPostQuery({
     variables: {
@@ -218,10 +220,17 @@ const DiaryScreen: FunctionComponent = () => {
   }
 
   const post = data?.post
-  console.log('post', post)
 
   const handleClickLike = () => {
     setLike(!like)
+  }
+
+  const handleCloseCommentWriteFormModal = () => {
+    if (comment.length) {
+      setShowCommentDiscardModal(true)
+    } else {
+      setToggleCommentWriteFormModal(false)
+    }
   }
 
   return (
@@ -230,7 +239,7 @@ const DiaryScreen: FunctionComponent = () => {
         {toggleCommentWriteFormModal && (
           <div
             className="comment-write-wrap"
-            onClick={() => setToggleCommentWriteFormModal(false)}
+            onClick={handleCloseCommentWriteFormModal}
           />
         )}
         {toggleCommentDeleteFormModal && (
@@ -295,7 +304,12 @@ const DiaryScreen: FunctionComponent = () => {
           onToggleCommentWriteFormModal={setToggleCommentWriteFormModal}
           toggleCommentDeleteFormModal={toggleCommentDeleteFormModal}
           onToggleCommentDeleteFormModal={setToggleCommentDeleteFormModal}
+          showCommentDiscardModal={showCommentDiscardModal}
+          onShowCommentDiscardModal={setShowCommentDiscardModal}
           comments={post.comment}
+          comment={comment}
+          onComment={setComment}
+          onCloseCommentWriteFormModal={handleCloseCommentWriteFormModal}
         />
       </DiaryBlock>
     </>
