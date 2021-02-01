@@ -131,21 +131,26 @@ const Comment: FunctionComponent<CommentProps> = ({
   onCloseCommentWriteFormModal,
 }) => {
   const [like, setLike] = useState(false)
+  const [commentID, setCommentID] = useState(null)
   const [deleteOnecomment] = useDeleteOneCommentMutation()
 
   const handleClickLike = () => {
     setLike(!like)
   }
 
-  const handleDeleteComment = (commentId: number) => {
-    console.log('commentId', commentId)
+  const handleDeleteComment = () => {
     deleteOnecomment({
       variables: {
         id: {
-          id: commentId,
+          id: commentID,
         },
       },
     })
+  }
+
+  const handleShowCommmentDeleteModal = (commentID: number) => {
+    onToggleCommentDeleteFormModal(true)
+    setCommentID(commentID)
   }
 
   const sortedComments = sortBy(comments).reverse()
@@ -177,14 +182,16 @@ const Comment: FunctionComponent<CommentProps> = ({
               </button>
               <button
                 className="delete-button"
-                onClick={() => handleDeleteComment(comment.id)}
+                onClick={() => handleShowCommmentDeleteModal(comment.id)}
               >
                 <TrashIcon />
               </button>
             </LikeCommentButtonBlock>
+            <div>{comment.id}</div>
             {toggleCommentDeleteFormModal && (
               <CommentDeleteFormModal
-                onDeleteComment={() => handleDeleteComment(comment.id)}
+                commentID={comment.id}
+                onDeleteComment={handleDeleteComment}
                 onToggleCommentDeleteFormModal={onToggleCommentDeleteFormModal}
               />
             )}

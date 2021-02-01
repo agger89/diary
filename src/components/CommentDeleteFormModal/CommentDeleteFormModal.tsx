@@ -94,10 +94,10 @@ const CommentDeleteFormModal: FunctionComponent<CommentDeleteFormModalProps> = (
 
 export default CommentDeleteFormModal
 
-// gql`
-//   mutation DeleteOneComment($id: commentWhereUniqueInput!) {
-//     deleteOnecomment(where: $id) {
-//       id
-//     }
-//   }
-// `
+gql`
+  mutation DeleteOneComment($id: commentWhereUniqueInput!) {
+    deleteOnecomment(where: $id) {
+      id
+    }
+  }
+`
