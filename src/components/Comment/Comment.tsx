@@ -187,10 +187,8 @@ const Comment: FunctionComponent<CommentProps> = ({
                 <TrashIcon />
               </button>
             </LikeCommentButtonBlock>
-            <div>{comment.id}</div>
             {toggleCommentDeleteFormModal && (
               <CommentDeleteFormModal
-                commentID={comment.id}
                 onDeleteComment={handleDeleteComment}
                 onToggleCommentDeleteFormModal={onToggleCommentDeleteFormModal}
               />
