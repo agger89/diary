@@ -12,7 +12,7 @@ import { format } from 'date-fns'
 import { sortBy } from 'lodash'
 import CommentWriteFormModal from '../CommentWriteFormModal'
 import CommentDeleteFormModal from '../CommentDeleteFormModal'
-import { ProfileImage } from '../../screens/DiaryScreen/DiaryScreen'
+import ProfileImage from 'components/ProfileImage'
 
 const CommentListBlock = styled.ul`
   margin: 16px 0 40px;
@@ -162,9 +162,7 @@ const Comment: FunctionComponent<CommentProps> = ({
         {sortedComments.map((comment) => (
           <li key={comment.id}>
             <ProfileBlock>
-              <Link href="/mypage">
-                <ProfileImage name="mark_zuckerberg" />
-              </Link>
+              <ProfileImage width={34} height={34} />
               <NameBlock>
                 <div className="name">{comment.member.name}</div>
                 <div className="date">
@@ -201,9 +199,7 @@ const Comment: FunctionComponent<CommentProps> = ({
       </CommentListBlock>
       <CommentWriteBlock onClick={() => onToggleCommentWriteFormModal(true)}>
         <ProfileBlock>
-          <Link href="/mypage">
-            <ProfileImage name="steve_jobs" width={32} height={32} />
-          </Link>
+          <ProfileImage width={34} height={34} />
           <p>Write your comment...</p>
         </ProfileBlock>
       </CommentWriteBlock>

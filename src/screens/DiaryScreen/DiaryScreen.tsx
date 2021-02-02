@@ -11,6 +11,7 @@ import { HeartFill as LikeIcon } from '@styled-icons/bootstrap'
 import { ShareAlt } from '@styled-icons/boxicons-regular'
 import { format } from 'date-fns'
 import Comment from 'components/Comment'
+import ProfileImage from 'components/ProfileImage'
 
 const DiaryBlock = styled.div`
   position: relative;
@@ -37,17 +38,6 @@ const DiaryHeaderBlock = styled.div`
     letter-spacing: 1.5px;
   }
 `
-export const ProfileImage = styled.div`
-  width: ${({ width }) => (width ? `${width}px` : '40px')};
-  height: ${({ height }) => (height ? `${height}px` : '40px')};
-  margin-right: 8px;
-  background-image: ${({ name }) => `url('/static/images/${name}.png')`};
-  background-size: contain;
-  background-position: center;
-  border-radius: 50%;
-  cursor: pointer;
-`
-
 const ShareButtonBlock = styled.a`
   display: flex;
   align-items: center;
@@ -250,9 +240,7 @@ const DiaryScreen: FunctionComponent = () => {
           />
         )}
         <DiaryHeaderBlock>
-          <Link href="/mypage">
-            <ProfileImage name="mark_zuckerberg" width={34} height={34} />
-          </Link>
+          <ProfileImage width={34} height={34} />
           <h6 className="header-title">Diary</h6>
           <ShareButtonBlock href="#">
             <ShareIcon />

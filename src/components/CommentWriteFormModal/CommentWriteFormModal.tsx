@@ -5,6 +5,7 @@ import { useCreateOneCommentMutation } from 'generated/graphql'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import CommentDiscardModal from './CommentDiscardModal'
+import ProfileImage from 'components/ProfileImage'
 
 const CommentWriteFormModalBlock = styled.div`
   position: fixed;
@@ -40,15 +41,6 @@ const ProfileBlock = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 8px;
-`
-const ProfileImage = styled.div`
-  width: ${({ width }) => (width ? `${width}px` : '40px')};
-  height: ${({ height }) => (height ? `${height}px` : '40px')};
-  background-image: ${({ name }) => `url('/static/images/${name}.png')`};
-  background-size: contain;
-  background-position: center;
-  border-radius: 50%;
-  cursor: pointer;
 `
 const NameBlock = styled.div`
   display: flex;
@@ -214,9 +206,7 @@ const CommentWriteFormModal: FunctionComponent<CommentWriteFormModalProps> = ({
     <CommentWriteFormModalBlock>
       <HeaderBlock>
         <ProfileBlock>
-          <Link href="mypage">
-            <ProfileImage name="mark_zuckerberg" />
-          </Link>
+          <ProfileImage width={38} height={38} />
           <NameBlock>
             <div className="name">Mark Zuckerberg</div>
             <div className="date">Jan 11</div>
@@ -235,7 +225,7 @@ const CommentWriteFormModal: FunctionComponent<CommentWriteFormModalProps> = ({
         </SubTextBlock>
         <FormBlock>
           <Link href="mypage">
-            <ProfileImage name="steve_jobs" width={30} height={30} />
+            <ProfileImage width={32} height={32} />
           </Link>
           <form onSubmit={handleSubmit(onCommentSubmit)}>
             <textarea
