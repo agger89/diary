@@ -1,4 +1,5 @@
 import React, { FunctionComponent, useState, ChangeEvent } from 'react'
+import Link from 'next/link'
 import gql from 'graphql-tag'
 import { useCreateOneCommentMutation } from 'generated/graphql'
 import { useForm } from 'react-hook-form'
@@ -47,6 +48,7 @@ const ProfileImage = styled.div`
   background-size: contain;
   background-position: center;
   border-radius: 50%;
+  cursor: pointer;
 `
 const NameBlock = styled.div`
   display: flex;
@@ -212,7 +214,9 @@ const CommentWriteFormModal: FunctionComponent<CommentWriteFormModalProps> = ({
     <CommentWriteFormModalBlock>
       <HeaderBlock>
         <ProfileBlock>
-          <ProfileImage name="mark_zuckerberg" />
+          <Link href="mypage">
+            <ProfileImage name="mark_zuckerberg" />
+          </Link>
           <NameBlock>
             <div className="name">Mark Zuckerberg</div>
             <div className="date">Jan 11</div>
@@ -230,7 +234,9 @@ const CommentWriteFormModal: FunctionComponent<CommentWriteFormModalProps> = ({
           </p>
         </SubTextBlock>
         <FormBlock>
-          <ProfileImage name="steve_jobs" width={30} height={30} />
+          <Link href="mypage">
+            <ProfileImage name="steve_jobs" width={30} height={30} />
+          </Link>
           <form onSubmit={handleSubmit(onCommentSubmit)}>
             <textarea
               value={comment}

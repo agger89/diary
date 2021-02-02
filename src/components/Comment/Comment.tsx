@@ -1,4 +1,5 @@
 import React, { FunctionComponent, useState } from 'react'
+import Link from 'next/link'
 import gql from 'graphql-tag'
 import { useDeleteOneCommentMutation } from 'generated/graphql'
 import styled from 'styled-components'
@@ -161,7 +162,9 @@ const Comment: FunctionComponent<CommentProps> = ({
         {sortedComments.map((comment) => (
           <li key={comment.id}>
             <ProfileBlock>
-              <ProfileImage name="mark_zuckerberg" />
+              <Link href="/mypage">
+                <ProfileImage name="mark_zuckerberg" />
+              </Link>
               <NameBlock>
                 <div className="name">{comment.member.name}</div>
                 <div className="date">
@@ -198,7 +201,9 @@ const Comment: FunctionComponent<CommentProps> = ({
       </CommentListBlock>
       <CommentWriteBlock onClick={() => onToggleCommentWriteFormModal(true)}>
         <ProfileBlock>
-          <ProfileImage name="steve_jobs" width={32} height={32} />
+          <Link href="/mypage">
+            <ProfileImage name="steve_jobs" width={32} height={32} />
+          </Link>
           <p>Write your comment...</p>
         </ProfileBlock>
       </CommentWriteBlock>

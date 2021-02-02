@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useState } from 'react'
+import Link from 'next/link'
 import gql from 'graphql-tag'
 import { useDiaryScreenPostQuery } from 'generated/graphql'
-import Link from 'next/link'
 import styled from 'styled-components'
 import {
   Map as MapIcon,
@@ -45,6 +45,7 @@ export const ProfileImage = styled.div`
   background-size: contain;
   background-position: center;
   border-radius: 50%;
+  cursor: pointer;
 `
 
 const ShareButtonBlock = styled.a`
@@ -249,7 +250,9 @@ const DiaryScreen: FunctionComponent = () => {
           />
         )}
         <DiaryHeaderBlock>
-          <ProfileImage name="mark_zuckerberg" width={30} height={30} />
+          <Link href="/mypage">
+            <ProfileImage name="mark_zuckerberg" width={34} height={34} />
+          </Link>
           <h6 className="header-title">Diary</h6>
           <ShareButtonBlock href="#">
             <ShareIcon />
