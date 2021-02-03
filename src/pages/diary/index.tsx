@@ -1,12 +1,12 @@
 import React, { FunctionComponent } from 'react'
-import MainLayout from 'components/MainLayout'
+import PageLayout from 'components/PageLayout'
 import DiaryScreen from 'screens/DiaryScreen'
 
 const DiaryPage: FunctionComponent = () => {
   return (
-    <MainLayout>
+    <PageLayout>
       <DiaryScreen />
-    </MainLayout>
+    </PageLayout>
   )
 }
 
