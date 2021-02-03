@@ -1,16 +1,12 @@
 import React, { FunctionComponent, useState } from 'react'
-import Link from 'next/link'
 import gql from 'graphql-tag'
 import { useDiaryScreenPostQuery } from 'generated/graphql'
 import styled from 'styled-components'
-import {
-  Map as MapIcon,
-  CommentDetail as CommentIcon,
-} from '@styled-icons/boxicons-solid'
+import { CommentDetail as CommentIcon } from '@styled-icons/boxicons-solid'
 import { HeartFill as LikeIcon } from '@styled-icons/bootstrap'
-import { format } from 'date-fns'
 import Comment from 'components/Comment'
 import Header from 'components/Header'
+import Content from 'components/Content'
 
 const DiaryBlock = styled.div`
   position: relative;
@@ -24,74 +20,6 @@ const DiaryBlock = styled.div`
     bottom: 0;
     left: 0;
     background-color: #ffffff3d;
-  }
-`
-
-const DiaryTitleBlock = styled.div`
-  .title {
-    margin-bottom: 22px;
-    font-size: 20px;
-    font-weight: bold;
-    font-family: monospace;
-    color: #fff;
-    letter-spacing: 0.02rem;
-    line-height: 1.5rem;
-    word-break: keep-all;
-  }
-`
-const LocationHashtagBlock = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: fit-content;
-`
-const LocationTimeInfoBlock = styled.div`
-  display: inline-block;
-  margin-bottom: 10px;
-  font-size: 12px;
-  font-weight: bold;
-  color: #686e78;
-  cursor: pointer;
-  svg {
-    width: 16px;
-    margin-top: -3px;
-    margin-right: 2px;
-  }
-  span {
-    margin-right: 4px;
-  }
-`
-const HashtagBlock = styled.div`
-  display: inline-block;
-  margin-left: 4px;
-  font-size: 12px;
-  font-weight: bold;
-  color: #fff;
-  cursor: pointer;
-  .hashtag {
-    color: #999;
-    .text {
-      color: #fff;
-    }
-  }
-`
-
-const DiaryBodyBlock = styled.div`
-  position: relative;
-  margin: 30px 0 20px;
-`
-const DiaryBodyContentBlock = styled.div`
-  display: flex;
-  flex-direction: column;
-  color: #fff;
-  .content-image {
-    display: block;
-    height: 300px;
-    background-image: url('/static/images/test_image.jpeg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    border-radius: 1rem;
-    overflow: hidden;
   }
 `
 
@@ -206,31 +134,7 @@ const DiaryScreen: FunctionComponent = () => {
           />
         )}
         <Header />
-        <DiaryTitleBlock>
-          <div className="title">{post.title}</div>
-          <LocationHashtagBlock>
-            <LocationTimeInfoBlock>
-              <Link href="/diaryList">
-                <>
-                  <MapIcon />
-                  <span>{format(new Date(post.create_date), 'MMM dd, yyyy')}</span>
-                </>
-              </Link>
-            </LocationTimeInfoBlock>
-            <HashtagBlock>
-              <Link href="/hashtag">
-                <div className="hashtag">
-                  # <span className="text">hashtag</span>
-                </div>
-              </Link>
-            </HashtagBlock>
-          </LocationHashtagBlock>
-        </DiaryTitleBlock>
-        <DiaryBodyBlock>
-          <DiaryBodyContentBlock>
-            <div className="content-image" />
-          </DiaryBodyContentBlock>
-        </DiaryBodyBlock>
+        <Content postTitle={post.title} postCreateDate={post.create_date} />
         <DiaryBottomBlock>
           <LikeCommentInfoBlock>
             <span>
