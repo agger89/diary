@@ -2,11 +2,11 @@ import React, { FunctionComponent, useState } from 'react'
 import gql from 'graphql-tag'
 import { useDiaryScreenPostQuery } from 'generated/graphql'
 import styled from 'styled-components'
-import { CommentDetail as CommentIcon } from '@styled-icons/boxicons-solid'
-import { HeartFill as LikeIcon } from '@styled-icons/bootstrap'
-import Comment from 'components/Comment'
 import Header from 'components/Header'
 import Content from 'components/Content'
+import ActionButton from 'components/ActionButton'
+import Comment from 'components/Comment'
+import CommentModal from 'components/CommentModal'
 
 const DiaryBlock = styled.div`
   position: relative;
@@ -23,64 +23,6 @@ const DiaryBlock = styled.div`
   }
 `
 
-const DiaryBottomBlock = styled.div``
-const LikeCommentInfoBlock = styled.div`
-  display: flex;
-  margin-bottom: 16px;
-  span {
-    display: inline-block;
-    margin-right: 12px;
-    padding: 0;
-    background: transparent;
-    border: 0;
-    font-size: 12px;
-    font-weight: bold;
-    color: #686e78;
-    letter-spacing: 0.025rem;
-    .text {
-      margin-left: 4px;
-    }
-  }
-`
-const LikeCommentButtonBlock = styled.div`
-  padding: 16px 0;
-  border: 1px solid #f4f5f61f;
-  border-right: 0;
-  border-left: 0;
-  button {
-    display: inline-block;
-    padding: 6px 10px;
-    background-color: transparent;
-    border: 0;
-    border-radius: 4px;
-    font-size: 14px;
-    color: #a9abb3;
-    letter-spacing: 0.025rem;
-    outline: none;
-    cursor: pointer;
-    svg {
-      width: 20px;
-      height: 20px;
-      margin-right: 10px;
-      color: #a9abb3;
-    }
-    &:hover {
-      background-color: #e9eaec14;
-      color: #fff;
-      svg {
-        color: #fff;
-      }
-    }
-  }
-  .like {
-    margin-right: 150px;
-  }
-`
-
-const CustomLikeButton = styled(LikeIcon)`
-  color: ${({ toggleLike }) => toggleLike && '#ff4746 !important'};
-`
-
 const DiaryScreen: FunctionComponent = () => {
   const [like, setLike] = useState(false)
   const [toggleCommentWriteFormModal, setToggleCommentWriteFormModal] = useState<
@@ -91,6 +33,7 @@ const DiaryScreen: FunctionComponent = () => {
   )
   const [comment, setComment] = useState('')
   const [showCommentDiscardModal, setShowCommentDiscardModal] = useState(false)
+  const [commentID, setCommentID] = useState(null)
 
   const { data } = useDiaryScreenPostQuery({
     variables: {
@@ -105,10 +48,6 @@ const DiaryScreen: FunctionComponent = () => {
   }
 
   const post = data?.post
-
-  const handleClickLike = () => {
-    setLike(!like)
-  }
 
   const handleCloseCommentWriteFormModal = () => {
     if (comment.length) {
@@ -134,26 +73,17 @@ const DiaryScreen: FunctionComponent = () => {
           />
         )}
         <Header />
-        <Content postTitle={post.title} postCreateDate={post.create_date} />
-        <DiaryBottomBlock>
-          <LikeCommentInfoBlock>
-            <span>
-              {post.like_num} <span className="text">Like</span>
-            </span>
-            <span>
-              {post.comment.length} <span className="text">Comments</span>
-            </span>
-          </LikeCommentInfoBlock>
-          <LikeCommentButtonBlock>
-            <button className="like" onClick={handleClickLike}>
-              <CustomLikeButton toggleLike={like} /> Like
-            </button>
-            <button onClick={() => setToggleCommentWriteFormModal(true)}>
-              <CommentIcon />
-              Comment
-            </button>
-          </LikeCommentButtonBlock>
-        </DiaryBottomBlock>
+        <Content
+          postTitle={post.title}
+          postCreateDate={post.create_date}
+          postLikeNum={post.like_num}
+          postComment={post.comment}
+        />
+        <ActionButton
+          like={like}
+          onLike={setLike}
+          onToggleCommentWriteFormModal={setToggleCommentWriteFormModal}
+        />
         <Comment
           toggleCommentWriteFormModal={toggleCommentWriteFormModal}
           onToggleCommentWriteFormModal={setToggleCommentWriteFormModal}
@@ -165,6 +95,19 @@ const DiaryScreen: FunctionComponent = () => {
           comment={comment}
           onComment={setComment}
           onCloseCommentWriteFormModal={handleCloseCommentWriteFormModal}
+          onCommentID={setCommentID}
+        />
+        <CommentModal
+          toggleCommentWriteFormModal={toggleCommentWriteFormModal}
+          onToggleCommentWriteFormModal={setToggleCommentWriteFormModal}
+          toggleCommentDeleteFormModal={toggleCommentDeleteFormModal}
+          onToggleCommentDeleteFormModal={setToggleCommentDeleteFormModal}
+          showCommentDiscardModal={showCommentDiscardModal}
+          onShowCommentDiscardModal={setShowCommentDiscardModal}
+          comment={comment}
+          onComment={setComment}
+          onCloseCommentWriteFormModal={handleCloseCommentWriteFormModal}
+          commentID={commentID}
         />
       </DiaryBlock>
     </>

@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { Map as MapIcon } from '@styled-icons/boxicons-solid'
 import { format } from 'date-fns'
 
-const DiaryTitleBlock = styled.div`
+const ContentTitleBlock = styled.div`
   .title {
     margin-bottom: 22px;
     font-size: 20px;
@@ -22,7 +22,7 @@ const LocationHashtagBlock = styled.div`
   flex-direction: column;
   width: fit-content;
 `
-const LocationTimeInfoBlock = styled.div`
+const LocationDateInfoBlock = styled.div`
   display: inline-block;
   margin-bottom: 10px;
   font-size: 12px;
@@ -53,11 +53,11 @@ const HashtagBlock = styled.div`
   }
 `
 
-const DiaryBodyBlock = styled.div`
+const ContentBodyBlock = styled.div`
   position: relative;
   margin: 30px 0 20px;
 `
-const DiaryBodyContentBlock = styled.div`
+const ContentBodyContentBlock = styled.div`
   display: flex;
   flex-direction: column;
   color: #fff;
@@ -72,26 +72,51 @@ const DiaryBodyContentBlock = styled.div`
     overflow: hidden;
   }
 `
+const ContentBottomBlock = styled.div`
+  display: flex;
+  margin-bottom: 16px;
+  span {
+    display: inline-block;
+    margin-right: 12px;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    font-size: 12px;
+    font-weight: bold;
+    color: #686e78;
+    letter-spacing: 0.025rem;
+    .text {
+      margin-left: 4px;
+    }
+  }
+`
 
 interface ContentProps {
   postTitle: string
   postCreateDate: Date
+  postLikeNum: number
+  postComment: any
 }
 
-const Content: FunctionComponent<ContentProps> = ({ postTitle, postCreateDate }) => {
+const Content: FunctionComponent<ContentProps> = ({
+  postTitle,
+  postCreateDate,
+  postLikeNum,
+  postComment,
+}) => {
   return (
     <>
-      <DiaryTitleBlock>
+      <ContentTitleBlock>
         <div className="title">{postTitle}</div>
         <LocationHashtagBlock>
-          <LocationTimeInfoBlock>
+          <LocationDateInfoBlock>
             <Link href="/diaryList">
               <>
                 <MapIcon />
                 <span>{format(new Date(postCreateDate), 'MMM dd, yyyy')}</span>
               </>
             </Link>
-          </LocationTimeInfoBlock>
+          </LocationDateInfoBlock>
           <HashtagBlock>
             <Link href="/hashtag">
               <div className="hashtag">
@@ -100,12 +125,20 @@ const Content: FunctionComponent<ContentProps> = ({ postTitle, postCreateDate })
             </Link>
           </HashtagBlock>
         </LocationHashtagBlock>
-      </DiaryTitleBlock>
-      <DiaryBodyBlock>
-        <DiaryBodyContentBlock>
+      </ContentTitleBlock>
+      <ContentBodyBlock>
+        <ContentBodyContentBlock>
           <div className="content-image" />
-        </DiaryBodyContentBlock>
-      </DiaryBodyBlock>
+        </ContentBodyContentBlock>
+      </ContentBodyBlock>
+      <ContentBottomBlock>
+        <span>
+          {postLikeNum} <span className="text">Like</span>
+        </span>
+        <span>
+          {postComment.length} <span className="text">Comments</span>
+        </span>
+      </ContentBottomBlock>
     </>
   )
 }
