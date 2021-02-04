@@ -1,7 +1,4 @@
 import React, { FunctionComponent, useState } from 'react'
-import Link from 'next/link'
-import gql from 'graphql-tag'
-import { useDeleteOneCommentMutation } from 'generated/graphql'
 import styled from 'styled-components'
 import { HeartFill as LikeIcon } from '@styled-icons/bootstrap'
 import {
@@ -10,8 +7,6 @@ import {
 } from '@styled-icons/boxicons-solid'
 import { format } from 'date-fns'
 import { sortBy } from 'lodash'
-import CommentWriteFormModal from '../CommentWriteFormModal'
-import CommentDeleteFormModal from '../CommentDeleteFormModal'
 import ProfileImage from 'components/ProfileImage'
 
 const CommentListBlock = styled.ul`
@@ -117,41 +112,24 @@ interface CommentProps {
   comment: string
   onComment: (value: string) => void
   onCloseCommentWriteFormModal: () => void
+  onCommentID: (value: number) => void
 }
 
 const Comment: FunctionComponent<CommentProps> = ({
-  toggleCommentWriteFormModal,
   onToggleCommentWriteFormModal,
-  toggleCommentDeleteFormModal,
   onToggleCommentDeleteFormModal,
   comments,
-  showCommentDiscardModal,
-  onShowCommentDiscardModal,
-  comment,
-  onComment,
-  onCloseCommentWriteFormModal,
+  onCommentID,
 }) => {
   const [like, setLike] = useState(false)
-  const [commentID, setCommentID] = useState(null)
-  const [deleteOnecomment] = useDeleteOneCommentMutation()
 
   const handleClickLike = () => {
     setLike(!like)
   }
 
-  const handleDeleteComment = () => {
-    deleteOnecomment({
-      variables: {
-        id: {
-          id: commentID,
-        },
-      },
-    })
-  }
-
   const handleShowCommmentDeleteModal = (commentID: number) => {
     onToggleCommentDeleteFormModal(true)
-    setCommentID(commentID)
+    onCommentID(commentID)
   }
 
   const sortedComments = sortBy(comments).reverse()
@@ -188,12 +166,6 @@ const Comment: FunctionComponent<CommentProps> = ({
                 <TrashIcon />
               </button>
             </LikeCommentButtonBlock>
-            {toggleCommentDeleteFormModal && (
-              <CommentDeleteFormModal
-                onDeleteComment={handleDeleteComment}
-                onToggleCommentDeleteFormModal={onToggleCommentDeleteFormModal}
-              />
-            )}
           </li>
         ))}
       </CommentListBlock>
@@ -203,26 +175,8 @@ const Comment: FunctionComponent<CommentProps> = ({
           <p>Write your comment...</p>
         </ProfileBlock>
       </CommentWriteBlock>
-      {toggleCommentWriteFormModal && (
-        <CommentWriteFormModal
-          showCommentDiscardModal={showCommentDiscardModal}
-          onShowCommentDiscardModal={onShowCommentDiscardModal}
-          onToggleCommentWriteFormModal={onToggleCommentWriteFormModal}
-          comment={comment}
-          onComment={onComment}
-          onCloseCommentWriteFormModal={onCloseCommentWriteFormModal}
-        />
-      )}
     </>
   )
 }
 
 export default Comment
-
-gql`
-  mutation DeleteOneComment($id: commentWhereUniqueInput!) {
-    deleteOnecomment(where: $id) {
-      id
-    }
-  }
-`

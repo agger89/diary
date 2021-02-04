@@ -61,16 +61,24 @@ const ButtonBlock = styled.div`
 `
 
 interface CommentDeleteFormModalProps {
-  onDeleteComment: () => void
   onToggleCommentDeleteFormModal: (value: boolean) => void
+  commentID: number
 }
 
 const CommentDeleteFormModal: FunctionComponent<CommentDeleteFormModalProps> = ({
-  onDeleteComment,
   onToggleCommentDeleteFormModal,
+  commentID,
 }) => {
-  const handleClick = () => {
-    onDeleteComment()
+  const [deleteOnecomment] = useDeleteOneCommentMutation()
+
+  const handleClickDeleteComment = () => {
+    deleteOnecomment({
+      variables: {
+        id: {
+          id: commentID,
+        },
+      },
+    })
   }
 
   return (
@@ -84,7 +92,7 @@ const CommentDeleteFormModal: FunctionComponent<CommentDeleteFormModalProps> = (
         >
           Cancel
         </button>
-        <button className="delete-button" onClick={handleClick}>
+        <button className="delete-button" onClick={handleClickDeleteComment}>
           Delete
         </button>
       </ButtonBlock>

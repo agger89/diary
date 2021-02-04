@@ -249,13 +249,6 @@ const CommentWriteFormModal: FunctionComponent<CommentWriteFormModalProps> = ({
           </form>
         </FormBlock>
       </BodyBlock>
-      {showCommentDiscardModal && (
-        <CommentDiscardModal
-          onToggleCommentWriteFormModal={onToggleCommentWriteFormModal}
-          onShowCommentDiscardModal={onShowCommentDiscardModal}
-          onComment={onComment}
-        />
-      )}
     </CommentWriteFormModalBlock>
   )
 }
