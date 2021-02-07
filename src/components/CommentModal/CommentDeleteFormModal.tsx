@@ -2,6 +2,7 @@ import React, { FunctionComponent } from 'react'
 import gql from 'graphql-tag'
 import { useDeleteOneCommentMutation } from 'generated/graphql'
 import styled from 'styled-components'
+import { ModalWrap } from './CommentWriteFormModal'
 
 const CommentDeleteFormModalBlock = styled.div`
   position: fixed;
@@ -71,7 +72,7 @@ const CommentDeleteFormModal: FunctionComponent<CommentDeleteFormModalProps> = (
 }) => {
   const [deleteOnecomment] = useDeleteOneCommentMutation()
 
-  const handleClickDeleteComment = () => {
+  const handleDeleteButtonClick = () => {
     deleteOnecomment({
       variables: {
         id: {
@@ -82,21 +83,23 @@ const CommentDeleteFormModal: FunctionComponent<CommentDeleteFormModalProps> = (
   }
 
   return (
-    <CommentDeleteFormModalBlock>
-      <h1 className="title">Delete comment</h1>
-      <p className="description">Are you sure you want to delete your comment?</p>
-      <ButtonBlock>
-        <button
-          className="cancel-button"
-          onClick={() => onToggleCommentDeleteFormModal(false)}
-        >
-          Cancel
-        </button>
-        <button className="delete-button" onClick={handleClickDeleteComment}>
-          Delete
-        </button>
-      </ButtonBlock>
-    </CommentDeleteFormModalBlock>
+    <ModalWrap>
+      <CommentDeleteFormModalBlock>
+        <h1 className="title">Delete comment</h1>
+        <p className="description">Are you sure you want to delete your comment?</p>
+        <ButtonBlock>
+          <button
+            className="cancel-button"
+            onClick={() => onToggleCommentDeleteFormModal(false)}
+          >
+            Cancel
+          </button>
+          <button className="delete-button" onClick={handleDeleteButtonClick}>
+            Delete
+          </button>
+        </ButtonBlock>
+      </CommentDeleteFormModalBlock>
+    </ModalWrap>
   )
 }
 

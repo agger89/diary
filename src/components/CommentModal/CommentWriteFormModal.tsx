@@ -1,11 +1,19 @@
-import React, { FunctionComponent, useState, ChangeEvent } from 'react'
+import React, { FunctionComponent } from 'react'
 import Link from 'next/link'
 import gql from 'graphql-tag'
 import { useCreateOneCommentMutation } from 'generated/graphql'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
-import CommentDiscardModal from './CommentDiscardModal'
 import ProfileImage from 'components/ProfileImage'
+
+export const ModalWrap = styled.div`
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #ffffff3d;
+`
 
 const CommentWriteFormModalBlock = styled.div`
   position: fixed;
@@ -135,27 +143,23 @@ const SubmitBlock = styled.div`
     }
   }
   .submit-button {
-    background-color: ${({ activeSubmitButton }) =>
-      activeSubmitButton ? '#48ffa0' : '#26282c'};
+    background-color: ${({ activeButton }) =>
+      activeButton ? '#48ffa0' : '#26282c'};
     border-radius: 8px;
-    color: ${({ activeSubmitButton }) =>
-      activeSubmitButton ? '#151618' : '#686e78'};
+    color: ${({ activeButton }) => (activeButton ? '#151618' : '#686e78')};
   }
 `
 
 interface CommentWriteFormModalProps {
+  toggleCommentDiscardModal: boolean
+  onToggleCommentDiscardModal: (value: boolean) => void
   onToggleCommentWriteFormModal: (value: boolean) => void
-  showCommentDiscardModal: boolean
-  onShowCommentDiscardModal: (value: boolean) => void
-
-  onCloseCommentWriteFormModal: () => void
 }
 
 const CommentWriteFormModal: FunctionComponent<CommentWriteFormModalProps> = ({
+  toggleCommentDiscardModal,
+  onToggleCommentDiscardModal,
   onToggleCommentWriteFormModal,
-  showCommentDiscardModal,
-  onShowCommentDiscardModal,
-  onCloseCommentWriteFormModal,
 }) => {
   const { handleSubmit, register, reset, formState } = useForm<{ comment: string }>({
     defaultValues: {
@@ -164,12 +168,8 @@ const CommentWriteFormModal: FunctionComponent<CommentWriteFormModalProps> = ({
   })
   const { dirty } = formState
 
-  const [activeSubmitButton, setActiveSubmitButton] = useState(false)
-  // const client = useApolloClient()
-
   const [createOnecomment] = useCreateOneCommentMutation({
     update: (cache, result) => {
-      // client.cache.
       if (!result?.data?.createOnecomment?.post) {
         return
       }
@@ -190,6 +190,14 @@ const CommentWriteFormModal: FunctionComponent<CommentWriteFormModalProps> = ({
             //     }
             //   `,
             // })
+
+            if (
+              existingCommentRefs.some(
+                (ref) => readField('id', ref) === newComment.id,
+              )
+            ) {
+              return existingCommentRefs
+            }
 
             return [...existingCommentRefs, newComment]
           },
@@ -226,52 +234,66 @@ const CommentWriteFormModal: FunctionComponent<CommentWriteFormModalProps> = ({
     })
   }
 
+  const handleCancelButtonClick = () => {
+    if (dirty) {
+      onToggleCommentDiscardModal(true)
+    } else {
+      onToggleCommentWriteFormModal(false)
+    }
+
+    if (toggleCommentDiscardModal) {
+      onToggleCommentWriteFormModal(false)
+    }
+  }
+
   return (
-    <CommentWriteFormModalBlock>
-      <HeaderBlock>
-        <ProfileBlock>
-          <ProfileImage width={38} height={38} />
-          <NameBlock>
-            <div className="name">Mark Zuckerberg</div>
-            <div className="date">Jan 11</div>
-          </NameBlock>
-        </ProfileBlock>
-        <h1 className="title">
-          The most valuable software developer skills to get hired now
-        </h1>
-      </HeaderBlock>
-      <BodyBlock>
-        <SubTextBlock>
-          <span className="time-line-bar" />
-          <p className="sub-text">
-            Reply to<span> Mark Zuckerberg</span>
-          </p>
-        </SubTextBlock>
-        <FormBlock>
-          <Link href="mypage">
-            <ProfileImage width={32} height={32} />
-          </Link>
-          <form onSubmit={handleSubmit(onCommentSubmit)}>
-            <textarea
-              name="comment"
-              ref={register}
-              placeholder="Write your comment..."
-            />
-            <SubmitBlock activeSubmitButton={dirty}>
-              <span
-                className="button cancel-button"
-                onClick={onCloseCommentWriteFormModal}
-              >
-                Cancel
-              </span>
-              <button type="submit" className="button submit-button">
-                Comment
-              </button>
-            </SubmitBlock>
-          </form>
-        </FormBlock>
-      </BodyBlock>
-    </CommentWriteFormModalBlock>
+    <ModalWrap>
+      <CommentWriteFormModalBlock>
+        <HeaderBlock>
+          <ProfileBlock>
+            <ProfileImage width={38} height={38} />
+            <NameBlock>
+              <div className="name">Mark Zuckerberg</div>
+              <div className="date">Jan 11</div>
+            </NameBlock>
+          </ProfileBlock>
+          <h1 className="title">
+            The most valuable software developer skills to get hired now
+          </h1>
+        </HeaderBlock>
+        <BodyBlock>
+          <SubTextBlock>
+            <span className="time-line-bar" />
+            <p className="sub-text">
+              Reply to<span> Mark Zuckerberg</span>
+            </p>
+          </SubTextBlock>
+          <FormBlock>
+            <Link href="mypage">
+              <ProfileImage width={32} height={32} />
+            </Link>
+            <form onSubmit={handleSubmit(onCommentSubmit)}>
+              <textarea
+                name="comment"
+                ref={register}
+                placeholder="Write your comment..."
+              />
+              <SubmitBlock activeButton={dirty}>
+                <span
+                  className="button cancel-button"
+                  onClick={handleCancelButtonClick}
+                >
+                  Cancel
+                </span>
+                <button type="submit" className="button submit-button">
+                  Comment
+                </button>
+              </SubmitBlock>
+            </form>
+          </FormBlock>
+        </BodyBlock>
+      </CommentWriteFormModalBlock>
+    </ModalWrap>
   )
 }
 

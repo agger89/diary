@@ -59,18 +59,18 @@ const ButtonBlock = styled.div`
 `
 interface CommentDiscardModalProps {
   onToggleCommentWriteFormModal: (value: boolean) => void
-  onShowCommentDiscardModal: (value: boolean) => void
+  onToggleCommentDiscardModal: (value: boolean) => void
   onComment: (value: string) => void
 }
 
 const CommentDiscardModal: FunctionComponent<CommentDiscardModalProps> = ({
   onToggleCommentWriteFormModal,
-  onShowCommentDiscardModal,
+  onToggleCommentDiscardModal,
   onComment,
 }) => {
-  const handleCloseCommentModal = () => {
-    onComment('')
-    onShowCommentDiscardModal(false)
+  const handleDiscardButtonClick = () => {
+    // onComment('')
+    onToggleCommentDiscardModal(false)
     onToggleCommentWriteFormModal(false)
   }
 
@@ -83,11 +83,11 @@ const CommentDiscardModal: FunctionComponent<CommentDiscardModalProps> = ({
       <ButtonBlock>
         <button
           className="stay-button"
-          onClick={() => onShowCommentDiscardModal(false)}
+          onClick={() => onToggleCommentDiscardModal(false)}
         >
           Stay
         </button>
-        <button className="discard-button" onClick={handleCloseCommentModal}>
+        <button className="discard-button" onClick={handleDiscardButtonClick}>
           Discard
         </button>
       </ButtonBlock>

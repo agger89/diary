@@ -102,15 +102,9 @@ const CommentWriteBlock = styled.div`
   cursor: pointer;
 `
 interface CommentProps {
-  toggleCommentWriteFormModal: boolean
   onToggleCommentWriteFormModal: (value: boolean) => void
-  toggleCommentDeleteFormModal: boolean
   onToggleCommentDeleteFormModal: (value: boolean) => void
   comments: any
-  showCommentDiscardModal: boolean
-  onShowCommentDiscardModal: (value: boolean) => void
-
-  onCloseCommentWriteFormModal: () => void
   onCommentID: (value: number) => void
 }
 
@@ -122,11 +116,11 @@ const Comment: FunctionComponent<CommentProps> = ({
 }) => {
   const [like, setLike] = useState(false)
 
-  const handleClickLike = () => {
+  const handleLikeButtonClick = () => {
     setLike(!like)
   }
 
-  const handleShowCommmentDeleteModal = (commentID: number) => {
+  const handleDeleteButtonClick = (commentID: number) => {
     onToggleCommentDeleteFormModal(true)
     onCommentID(commentID)
   }
@@ -151,7 +145,7 @@ const Comment: FunctionComponent<CommentProps> = ({
               <p>{comment.text}</p>
             </ContentBlock>
             <LikeCommentButtonBlock>
-              <button className="like-button" onClick={handleClickLike}>
+              <button className="like-button" onClick={handleLikeButtonClick}>
                 <CustomLikeButton toggleLike={like} />
                 <span className="count">{comment.like_num}</span>
               </button>
@@ -160,7 +154,7 @@ const Comment: FunctionComponent<CommentProps> = ({
               </button>
               <button
                 className="delete-button"
-                onClick={() => handleShowCommmentDeleteModal(comment.id)}
+                onClick={() => handleDeleteButtonClick(comment.id)}
               >
                 <TrashIcon />
               </button>
