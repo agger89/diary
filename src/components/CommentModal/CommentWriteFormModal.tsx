@@ -147,8 +147,7 @@ interface CommentWriteFormModalProps {
   onToggleCommentWriteFormModal: (value: boolean) => void
   showCommentDiscardModal: boolean
   onShowCommentDiscardModal: (value: boolean) => void
-  comment: string
-  onComment: (value: string) => void
+
   onCloseCommentWriteFormModal: () => void
 }
 
@@ -156,16 +155,51 @@ const CommentWriteFormModal: FunctionComponent<CommentWriteFormModalProps> = ({
   onToggleCommentWriteFormModal,
   showCommentDiscardModal,
   onShowCommentDiscardModal,
-  comment,
-  onComment,
   onCloseCommentWriteFormModal,
 }) => {
-  const { handleSubmit, register } = useForm()
+  const { handleSubmit, register, reset, formState } = useForm<{ comment: string }>({
+    defaultValues: {
+      comment: '',
+    },
+  })
+  const { dirty } = formState
 
   const [activeSubmitButton, setActiveSubmitButton] = useState(false)
+  // const client = useApolloClient()
 
   const [createOnecomment] = useCreateOneCommentMutation({
+    update: (cache, result) => {
+      // client.cache.
+      if (!result?.data?.createOnecomment?.post) {
+        return
+      }
+      const newComment = {
+        ...result?.data?.createOnecomment,
+      }
+
+      cache.modify({
+        id: cache.identify(result.data.createOnecomment.post),
+        fields: {
+          comment(existingCommentRefs = [], { readField }) {
+            // const newCommentRef = cache.writeFragment({
+            //   data: newComment,
+            //   fragment: gql`
+            //     fragment NewComment on comment {
+            //       id
+            //       text
+            //     }
+            //   `,
+            // })
+
+            return [...existingCommentRefs, newComment]
+          },
+        },
+      })
+    },
     onCompleted: () => {
+      reset({
+        comment: '',
+      })
       onToggleCommentWriteFormModal(false)
     },
   })
@@ -190,16 +224,6 @@ const CommentWriteFormModal: FunctionComponent<CommentWriteFormModalProps> = ({
         commentData,
       },
     })
-  }
-
-  const handleCommentChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    onComment(e.target.value)
-
-    if (e.target.value.length > 0) {
-      setActiveSubmitButton(true)
-    } else {
-      setActiveSubmitButton(false)
-    }
   }
 
   return (
@@ -229,13 +253,11 @@ const CommentWriteFormModal: FunctionComponent<CommentWriteFormModalProps> = ({
           </Link>
           <form onSubmit={handleSubmit(onCommentSubmit)}>
             <textarea
-              value={comment}
               name="comment"
               ref={register}
               placeholder="Write your comment..."
-              onChange={handleCommentChange}
             />
-            <SubmitBlock activeSubmitButton={activeSubmitButton}>
+            <SubmitBlock activeSubmitButton={dirty}>
               <span
                 className="button cancel-button"
                 onClick={onCloseCommentWriteFormModal}
@@ -259,6 +281,16 @@ gql`
   mutation CreateOneComment($commentData: commentCreateInput!) {
     createOnecomment(data: $commentData) {
       id
+      text
+      member {
+        name
+      }
+      like_num
+      comments_num
+      create_date
+      post {
+        id
+      }
     }
   }
 `
