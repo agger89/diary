@@ -92,8 +92,6 @@ const DiaryScreen: FunctionComponent = () => {
           showCommentDiscardModal={showCommentDiscardModal}
           onShowCommentDiscardModal={setShowCommentDiscardModal}
           comments={post.comment}
-          comment={comment}
-          onComment={setComment}
           onCloseCommentWriteFormModal={handleCloseCommentWriteFormModal}
           onCommentID={setCommentID}
         />

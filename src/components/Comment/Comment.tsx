@@ -109,8 +109,7 @@ interface CommentProps {
   comments: any
   showCommentDiscardModal: boolean
   onShowCommentDiscardModal: (value: boolean) => void
-  comment: string
-  onComment: (value: string) => void
+
   onCloseCommentWriteFormModal: () => void
   onCommentID: (value: number) => void
 }
