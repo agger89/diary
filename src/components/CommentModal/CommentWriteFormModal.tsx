@@ -173,6 +173,7 @@ const CommentWriteFormModal: FunctionComponent<CommentWriteFormModalProps> = ({
       if (!result?.data?.createOnecomment?.post) {
         return
       }
+
       const newComment = {
         ...result?.data?.createOnecomment,
       }

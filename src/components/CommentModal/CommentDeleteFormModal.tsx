@@ -70,7 +70,25 @@ const CommentDeleteFormModal: FunctionComponent<CommentDeleteFormModalProps> = (
   onToggleCommentDeleteFormModal,
   commentID,
 }) => {
-  const [deleteOnecomment] = useDeleteOneCommentMutation()
+  const [deleteOnecomment] = useDeleteOneCommentMutation({
+    update: (cache, result) => {
+      if (!result?.data?.deleteOnecomment?.post) {
+        return
+      }
+
+      const idToRemove = result?.data?.deleteOnecomment?.post.id
+      cache.modify({
+        id: cache.identify(result.data.deleteOnecomment.post),
+        fields: {
+          comments(existingCommentRefs, { readField }) {
+            return existingCommentRefs.filter(
+              (commentRef) => idToRemove !== readField('id', commentRef),
+            )
+          },
+        },
+      })
+    },
+  })
 
   const handleDeleteButtonClick = () => {
     deleteOnecomment({
@@ -109,6 +127,9 @@ gql`
   mutation DeleteOneComment($id: commentWhereUniqueInput!) {
     deleteOnecomment(where: $id) {
       id
+      post {
+        id
+      }
     }
   }
 `
