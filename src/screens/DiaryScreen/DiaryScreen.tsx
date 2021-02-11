@@ -19,6 +19,24 @@ const DiaryBlock = styled.div`
   border: 1px solid #f4f5f61f;
 `
 
+const LoginButtonBlock = styled.button`
+  position: fixed;
+  top: 10px;
+  right: 20px;
+  padding: 8px 18px;
+  background: transparent;
+  border: 0;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  outline: none;
+  cursor: pointer;
+  &:hover {
+    background-color: #e9eaec14;
+  }
+`
+
 const DiaryScreen: FunctionComponent = () => {
   const [like, setLike] = useState(false)
   const [toggleCommentWriteFormModal, setToggleCommentWriteFormModal] = useState(
@@ -46,6 +64,7 @@ const DiaryScreen: FunctionComponent = () => {
 
   return (
     <DiaryBlock>
+      <LoginButtonBlock>Login</LoginButtonBlock>
       <Header />
       <Content
         postTitle={post.title}
