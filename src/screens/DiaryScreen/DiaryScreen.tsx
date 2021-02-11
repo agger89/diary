@@ -11,6 +11,7 @@ import {
   CommentDiscardModal,
   CommentDeleteFormModal,
 } from 'components/CommentModal'
+import Login from 'components/Login'
 
 const DiaryBlock = styled.div`
   position: relative;
@@ -102,6 +103,7 @@ const DiaryScreen: FunctionComponent = () => {
           commentID={commentID}
         />
       )}
+      <Login />
     </DiaryBlock>
   )
 }
