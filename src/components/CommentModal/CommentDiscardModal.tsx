@@ -60,13 +60,13 @@ const ButtonBlock = styled.div`
 interface CommentDiscardModalProps {
   onToggleCommentWriteFormModal: (value: boolean) => void
   onToggleCommentDiscardModal: (value: boolean) => void
-  onComment: (value: string) => void
+  // onComment: (value: string) => void
 }
 
 const CommentDiscardModal: FunctionComponent<CommentDiscardModalProps> = ({
   onToggleCommentWriteFormModal,
   onToggleCommentDiscardModal,
-  onComment,
+  // onComment,
 }) => {
   const handleDiscardButtonClick = () => {
     // onComment('')
