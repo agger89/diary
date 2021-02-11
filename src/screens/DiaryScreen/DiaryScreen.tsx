@@ -39,6 +39,7 @@ const LoginButtonBlock = styled.button`
 `
 
 const DiaryScreen: FunctionComponent = () => {
+  const [toggleLoginModal, setToggleLoginModal] = useState(false)
   const [like, setLike] = useState(false)
   const [toggleCommentWriteFormModal, setToggleCommentWriteFormModal] = useState(
     false,
@@ -65,7 +66,9 @@ const DiaryScreen: FunctionComponent = () => {
 
   return (
     <DiaryBlock>
-      <LoginButtonBlock>Login</LoginButtonBlock>
+      <LoginButtonBlock onClick={() => setToggleLoginModal(true)}>
+        Login
+      </LoginButtonBlock>
       <Header />
       <Content
         postTitle={post.title}
@@ -103,7 +106,7 @@ const DiaryScreen: FunctionComponent = () => {
           commentID={commentID}
         />
       )}
-      <Login />
+      {toggleLoginModal && <Login onToggleLoginModal={setToggleLoginModal} />}
     </DiaryBlock>
   )
 }

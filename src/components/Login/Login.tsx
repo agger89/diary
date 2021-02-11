@@ -22,11 +22,18 @@ const LoginModalBlock = styled.div`
   border-radius: 16px;
 `
 
-const Login: FunctionComponent = () => {
+interface LoginProps {
+  onToggleLoginModal: (value: boolean) => void
+}
+
+const Login: FunctionComponent<LoginProps> = ({ onToggleLoginModal }) => {
   return (
     <ModalWrap>
       <LoginBlock>
-        <LoginModalBlock>login modal</LoginModalBlock>
+        <LoginModalBlock>
+          login modal
+          <span onClick={() => onToggleLoginModal(false)}>x</span>
+        </LoginModalBlock>
       </LoginBlock>
     </ModalWrap>
   )
