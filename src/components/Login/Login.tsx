@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from 'react'
 import styled from 'styled-components'
 import { Close } from '@styled-icons/evaicons-solid'
+import { Github, Google } from '@styled-icons/boxicons-logos'
 import { ModalWrap } from '../CommentModal/CommentWriteFormModal'
 
 const LoginBlock = styled.div`
@@ -16,20 +17,16 @@ const LoginBlock = styled.div`
 
 const LoginModalBlock = styled.div`
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
   width: 420px;
   height: 380px;
   padding: 8px;
   background-color: #1c1e21;
   border: 1px solid #f4f5f61f;
   border-radius: 16px;
-  .title {
-    padding: 30px 0px;
-    font-weight: 700;
-    font-size: 24px;
-    color: #fff;
-    letter-spacing: 1.5px;
-    text-align: center;
-  }
   .close-button {
     position: absolute;
     top: 10px;
@@ -43,6 +40,22 @@ const LoginModalBlock = styled.div`
       background-color: #e9eaec14;
     }
   }
+  .title {
+    position: absolute;
+    top: 20px;
+    padding: 30px 0px;
+    font-weight: 700;
+    font-size: 24px;
+    color: #fff;
+    letter-spacing: 1.5px;
+    text-align: center;
+  }
+  .description {
+    margin-top: 10px;
+    color: #686e78;
+    line-height: 1.2;
+    text-align: center;
+  }
 `
 const CloseIcon = styled(Close)`
   width: 32px;
@@ -55,18 +68,27 @@ const ButtonBlock = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  button {
+  .sns-button {
+    display: flex;
+    align-items: center;
     width: 200px;
     margin-bottom: 14px;
-    padding: 14px 24px;
+    padding: 10px 24px;
     border: 0;
-    border-radius: 10px;
+    border-radius: 12px;
     box-shadow: 0;
     outline: none;
     cursor: pointer;
-    span {
+    .icon {
+      width: 34px;
+      margin-right: 8px;
+    }
+    .text {
       font-size: 16px;
       font-weight: 700;
+    }
+    &:hover {
+      background-color: #999;
     }
   }
 `
@@ -84,13 +106,19 @@ const Login: FunctionComponent<LoginProps> = ({ onToggleLoginModal }) => {
           </button>
           <h1 className="title">Diary</h1>
           <ButtonBlock>
-            <button>
-              <span>Sign in with GitHub</span>
+            <button className="sns-button">
+              <Github className="icon" />
+              <span className="text">Sign in with GitHub</span>
             </button>
-            <button>
-              <span>Sign in with Google</span>
+            <button className="sns-button">
+              <Google className="icon" />
+              <span className="text">Sign in with Google</span>
             </button>
           </ButtonBlock>
+          <p className="description">
+            viewport meta tags should not be used in _document.js's.
+            https://err.sh/next.js/no-document-viewport-meta
+          </p>
         </LoginModalBlock>
       </LoginBlock>
     </ModalWrap>
