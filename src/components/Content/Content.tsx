@@ -118,11 +118,9 @@ const Content: FunctionComponent<ContentProps> = ({
             </Link>
           </LocationDateInfoBlock>
           <HashtagBlock>
-            <Link href="/hashtag">
-              <div className="hashtag">
-                # <span className="text">hashtag</span>
-              </div>
-            </Link>
+            <div className="hashtag">
+              # <span className="text">hashtag</span>
+            </div>
           </HashtagBlock>
         </LocationHashtagBlock>
       </ContentTitleBlock>

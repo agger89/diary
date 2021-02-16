@@ -22,7 +22,7 @@ const LoginModalBlock = styled.div`
   justify-content: center;
   flex-direction: column;
   width: 420px;
-  height: 380px;
+  height: 340px;
   padding: 8px;
   background-color: #1c1e21;
   border: 1px solid #f4f5f61f;
@@ -42,8 +42,7 @@ const LoginModalBlock = styled.div`
   }
   .title {
     position: absolute;
-    top: 20px;
-    padding: 30px 0px;
+    top: 40px;
     font-weight: 700;
     font-size: 24px;
     color: #fff;
@@ -51,7 +50,9 @@ const LoginModalBlock = styled.div`
     text-align: center;
   }
   .description {
-    margin-top: 10px;
+    position: absolute;
+    bottom: 50px;
+    width: 350px;
     color: #686e78;
     line-height: 1.2;
     text-align: center;

@@ -6,7 +6,7 @@ import {
 } from '@styled-icons/boxicons-logos'
 import { Gmail as GmailIcon } from '@styled-icons/simple-icons'
 
-const MypageHeaderBlock = styled.div`
+const UserProfileBlock = styled.div`
   display: flex;
   margin-bottom: 40px;
 `
@@ -85,9 +85,9 @@ const SNSBlock = styled.ul`
   }
 `
 
-const MypageHeader: FunctionComponent = () => {
+const UserProfileHeader: FunctionComponent = () => {
   return (
-    <MypageHeaderBlock>
+    <UserProfileBlock>
       <ProfileImageBlock>
         <span className="profile-image" />
         <span className="like-title">Like</span>
@@ -116,8 +116,8 @@ const MypageHeader: FunctionComponent = () => {
           </li>
         </SNSBlock>
       </NameInfoBlock>
-    </MypageHeaderBlock>
+    </UserProfileBlock>
   )
 }
 
-export default MypageHeader
+export default UserProfileHeader

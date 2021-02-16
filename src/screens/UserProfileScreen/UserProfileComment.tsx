@@ -4,7 +4,7 @@ import { HeartFill as LikeIcon } from '@styled-icons/bootstrap'
 import { CommentDetail as CommentIcon } from '@styled-icons/boxicons-solid'
 import { RightArrow as RightArrowIcon } from '@styled-icons/boxicons-solid'
 
-const MypageCommentBlick = styled.div`
+const UserProfileCommentBlick = styled.div`
   .title {
     margin-top: 40px;
     margin-bottom: 24px;
@@ -75,9 +75,9 @@ const LoadMoreButton = styled.button`
   }
 `
 
-const MypageComment: FunctionComponent = () => {
+const UserProfileComment: FunctionComponent = () => {
   return (
-    <MypageCommentBlick>
+    <UserProfileCommentBlick>
       <h1 className="title">
         Comments <span className="count">(5)</span>
       </h1>
@@ -100,8 +100,8 @@ const MypageComment: FunctionComponent = () => {
       <LoadMoreButton>
         <span className="text">Load more</span> <RightArrowIcon />
       </LoadMoreButton>
-    </MypageCommentBlick>
+    </UserProfileCommentBlick>
   )
 }
 
-export default MypageComment
+export default UserProfileComment

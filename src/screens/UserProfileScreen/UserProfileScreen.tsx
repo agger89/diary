@@ -10,16 +10,16 @@ import styled from 'styled-components'
 import gql from 'graphql-tag'
 // import { useMypageScreenMembersQuery } from 'generated/graphql'
 
-import MypageHeader from './MypageHeader'
-import MypageArticle from './MypageArticle'
-import MypageComment from './MypageComment'
+import UserProfileHeader from './UserProfileHeader'
+import UserProfileArticle from './UserProfileArticle'
+import UserProfileComment from './UserProfileComment'
 
 const TabItems = [
   { id: 1, value: 'articles', title: 'Articles' },
   { id: 3, value: 'comments', title: 'Comments' },
 ]
 
-const MypageBlock = styled.div`
+const UserProfileBlock = styled.div`
   width: 600px;
   padding: 24px;
   border: 1px solid #a8b3cf33;
@@ -40,7 +40,7 @@ const TabItem = styled.span`
   cursor: pointer;
 `
 
-const MypageScreen: FunctionComponent = () => {
+const UserProfileScreen: FunctionComponent = () => {
   const [activeTab, setActiveTab] = useState<string>('articles')
 
   // const { data } = useMypageScreenMembersQuery()
@@ -49,10 +49,10 @@ const MypageScreen: FunctionComponent = () => {
   const renderContent = () => {
     switch (activeTab) {
       case 'articles': {
-        return <MypageArticle />
+        return <UserProfileArticle />
       }
       case 'comments': {
-        return <MypageComment />
+        return <UserProfileComment />
       }
     }
   }
@@ -62,8 +62,8 @@ const MypageScreen: FunctionComponent = () => {
   }, [])
 
   return (
-    <MypageBlock>
-      <MypageHeader />
+    <UserProfileBlock>
+      <UserProfileHeader />
       <TabBlock>
         {TabItems.map((item) => (
           <TabItem
@@ -77,11 +77,11 @@ const MypageScreen: FunctionComponent = () => {
         ))}
       </TabBlock>
       {renderContent()}
-    </MypageBlock>
+    </UserProfileBlock>
   )
 }
 
-export default MypageScreen
+export default UserProfileScreen
 
 // gql`
 //   query MypageScreenMembers {

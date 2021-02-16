@@ -20,7 +20,7 @@ interface ProfileImageProps {
 
 const ProfileImage: FunctionComponent<ProfileImageProps> = ({ width, height }) => {
   return (
-    <Link href="/mypage">
+    <Link href="/user-profile-page">
       <Image name="mark_zuckerberg" width={width} height={height} />
     </Link>
   )
