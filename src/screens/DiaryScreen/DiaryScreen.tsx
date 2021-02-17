@@ -13,7 +13,7 @@ import {
 } from 'components/CommentModal'
 import Login from 'components/Login'
 
-const DiaryBlock = styled.div`
+const DiaryScreenBlock = styled.div`
   position: relative;
   width: 600px;
   padding: 24px 32px 24px;
@@ -65,7 +65,7 @@ const DiaryScreen: FunctionComponent = () => {
   const post = data?.post
 
   return (
-    <DiaryBlock>
+    <DiaryScreenBlock>
       <LoginButtonBlock onClick={() => setToggleLoginModal(true)}>
         Login
       </LoginButtonBlock>
@@ -107,7 +107,7 @@ const DiaryScreen: FunctionComponent = () => {
         />
       )}
       {toggleLoginModal && <Login onToggleLoginModal={setToggleLoginModal} />}
-    </DiaryBlock>
+    </DiaryScreenBlock>
   )
 }
 
