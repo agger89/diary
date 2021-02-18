@@ -28,8 +28,8 @@ const HeaderDescriptionBlock = styled.div`
 const ProfileImageBlock = styled.div`
   display: flex;
   align-items: center;
+  margin-bottom: 30px;
 `
-
 const LoginInfoBlock = styled.div`
   display: flex;
   flex-direction: column;
@@ -37,7 +37,6 @@ const LoginInfoBlock = styled.div`
   font-size: 14px;
   color: #686e78;
 `
-
 const TopTextBlock = styled.div`
   display: flex;
   align-items: center;
@@ -47,6 +46,46 @@ const TopTextBlock = styled.div`
     height: 24px;
     margin-right: 10px;
     color: #686e78;
+  }
+`
+
+const EditProfileBlock = styled.div`
+  .title {
+    margin-bottom: 14px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #686e78;
+  }
+`
+const InputBlock = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  label {
+    padding-bottom: 4px;
+    padding-left: 6px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+  }
+  input {
+    padding: 8px 10px;
+    background-color: #a8b3cf14;
+    border: 1px solid #a8b3cf14;
+    border-radius: 10px;
+    outline: none;
+    color: #fff;
+    &:focus {
+      background-color: #151618;
+      border: 1px solid #fff;
+      &:hover {
+        background-color: transparent;
+      }
+    }
+    &:hover {
+      box-shadow: inset 0.125rem 0 0 0 #fff;
+      background-color: #a8b3cf1f;
+    }
   }
 `
 
@@ -67,6 +106,21 @@ const MypageScreen: FunctionComponent = () => {
           <p>Joined December 2020</p>
         </LoginInfoBlock>
       </ProfileImageBlock>
+      <EditProfileBlock>
+        <h1 className="title">Profile</h1>
+        <InputBlock>
+          <label htmlFor="">Name</label>
+          <input type="text" />
+        </InputBlock>
+        <InputBlock>
+          <label htmlFor="">Username</label>
+          <input type="text" />
+        </InputBlock>
+        <InputBlock>
+          <label htmlFor="">Email</label>
+          <input type="text" />
+        </InputBlock>
+      </EditProfileBlock>
     </MypageScreenBlock>
   )
 }
