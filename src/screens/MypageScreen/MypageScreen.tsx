@@ -18,11 +18,11 @@ const HeaderDescriptionBlock = styled.div`
     font-weight: 700;
     color: #fff;
   }
-  .bottom-text {
-    font-size: 16px;
-    font-weight: 700;
-    color: #686e78;
-  }
+`
+const SubText = styled.div`
+  font-size: 16px;
+  font-weight: 700;
+  color: #686e78;
 `
 
 const ProfileImageBlock = styled.div`
@@ -50,12 +50,13 @@ const TopTextBlock = styled.div`
 `
 
 const EditProfileBlock = styled.div`
-  .title {
-    margin-bottom: 14px;
-    font-size: 20px;
-    font-weight: 700;
-    color: #686e78;
-  }
+  margin-bottom: 20px;
+`
+const Title = styled.div`
+  margin-bottom: 14px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #686e78;
 `
 const InputBlock = styled.div`
   display: flex;
@@ -89,12 +90,30 @@ const InputBlock = styled.div`
   }
 `
 
+const MoreDetailsBlock = styled.div``
+const TitleBlock = styled.div`
+  display: flex;
+  margin-bottom: 20px;
+  h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #686e78;
+  }
+  button {
+    margin-left: auto;
+  }
+`
+const DetailContentBlock = styled.div``
+const SectionBlock = styled.div`
+  margin-bottom: 40px;
+`
+
 const MypageScreen: FunctionComponent = () => {
   return (
     <MypageScreenBlock>
       <HeaderDescriptionBlock>
         <h1 className="top-text">Set up your profile</h1>
-        <span className="bottom-text">Please fill in your details below</span>
+        <SubText>Please fill in your details below</SubText>
       </HeaderDescriptionBlock>
       <ProfileImageBlock>
         <ProfileImage width={100} height={100} borderRadius={15} />
@@ -107,7 +126,7 @@ const MypageScreen: FunctionComponent = () => {
         </LoginInfoBlock>
       </ProfileImageBlock>
       <EditProfileBlock>
-        <h1 className="title">Profile</h1>
+        <Title>Profile</Title>
         <InputBlock>
           <label htmlFor="">Name</label>
           <input type="text" />
@@ -121,6 +140,40 @@ const MypageScreen: FunctionComponent = () => {
           <input type="text" />
         </InputBlock>
       </EditProfileBlock>
+      <MoreDetailsBlock>
+        <TitleBlock>
+          <SubText>More details (optional)</SubText>
+          <button>화살표 버튼</button>
+        </TitleBlock>
+        <DetailContentBlock>
+          <SectionBlock>
+            <Title>About</Title>
+            <InputBlock>
+              <label htmlFor="">Company</label>
+              <input type="text" />
+            </InputBlock>
+            <InputBlock>
+              <label htmlFor="">Job title</label>
+              <input type="text" />
+            </InputBlock>
+          </SectionBlock>
+          <SectionBlock>
+            <Title>Social</Title>
+            <InputBlock>
+              <label htmlFor="">Twitter</label>
+              <input type="text" />
+            </InputBlock>
+            <InputBlock>
+              <label htmlFor="">Github</label>
+              <input type="text" />
+            </InputBlock>
+            <InputBlock>
+              <label htmlFor="">Website</label>
+              <input type="text" />
+            </InputBlock>
+          </SectionBlock>
+        </DetailContentBlock>
+      </MoreDetailsBlock>
     </MypageScreenBlock>
   )
 }
