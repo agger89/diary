@@ -1,6 +1,10 @@
-import React, { FunctionComponent } from 'react'
+import React, { FunctionComponent, useState } from 'react'
 import styled from 'styled-components'
-import { Github, Google } from '@styled-icons/boxicons-logos'
+import {
+  Github as GithubIcon,
+  Google as GoogleIcon,
+} from '@styled-icons/boxicons-logos'
+import { ArrowIosForward as ArrowButton } from '@styled-icons/evaicons-solid/ArrowIosForward'
 import ProfileImage from 'components/ProfileImage'
 
 const MypageScreenBlock = styled.div`
@@ -50,7 +54,7 @@ const TopTextBlock = styled.div`
 `
 
 const EditProfileBlock = styled.div`
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 `
 const Title = styled.div`
   margin-bottom: 14px;
@@ -93,7 +97,11 @@ const InputBlock = styled.div`
 const MoreDetailsBlock = styled.div``
 const TitleBlock = styled.div`
   display: flex;
+  align-items: center;
   margin-bottom: 20px;
+  padding-bottom: 4px;
+  border-bottom: 2px solid #a8b3cf14;
+  cursor: pointer;
   h2 {
     font-size: 20px;
     font-weight: 700;
@@ -101,6 +109,15 @@ const TitleBlock = styled.div`
   }
   button {
     margin-left: auto;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    outline: 0;
+    svg {
+      width: 26px;
+      height: 26px;
+      color: #686e78;
+    }
   }
 `
 const DetailContentBlock = styled.div``
@@ -109,6 +126,9 @@ const SectionBlock = styled.div`
 `
 
 const MypageScreen: FunctionComponent = () => {
+  const [toggleDetailView, setToggleDetailView] = useState(false)
+
+  const handleClickDetailView = () => setToggleDetailView(!toggleDetailView)
   return (
     <MypageScreenBlock>
       <HeaderDescriptionBlock>
@@ -119,7 +139,7 @@ const MypageScreen: FunctionComponent = () => {
         <ProfileImage width={100} height={100} borderRadius={15} />
         <LoginInfoBlock>
           <TopTextBlock>
-            <Github />
+            <GithubIcon />
             <p>via Github</p>
           </TopTextBlock>
           <p>Joined December 2020</p>
@@ -141,38 +161,42 @@ const MypageScreen: FunctionComponent = () => {
         </InputBlock>
       </EditProfileBlock>
       <MoreDetailsBlock>
-        <TitleBlock>
+        <TitleBlock onClick={handleClickDetailView}>
           <SubText>More details (optional)</SubText>
-          <button>화살표 버튼</button>
+          <button>
+            <ArrowButton />
+          </button>
         </TitleBlock>
-        <DetailContentBlock>
-          <SectionBlock>
-            <Title>About</Title>
-            <InputBlock>
-              <label htmlFor="">Company</label>
-              <input type="text" />
-            </InputBlock>
-            <InputBlock>
-              <label htmlFor="">Job title</label>
-              <input type="text" />
-            </InputBlock>
-          </SectionBlock>
-          <SectionBlock>
-            <Title>Social</Title>
-            <InputBlock>
-              <label htmlFor="">Twitter</label>
-              <input type="text" />
-            </InputBlock>
-            <InputBlock>
-              <label htmlFor="">Github</label>
-              <input type="text" />
-            </InputBlock>
-            <InputBlock>
-              <label htmlFor="">Website</label>
-              <input type="text" />
-            </InputBlock>
-          </SectionBlock>
-        </DetailContentBlock>
+        {toggleDetailView && (
+          <DetailContentBlock>
+            <SectionBlock>
+              <Title>About</Title>
+              <InputBlock>
+                <label htmlFor="">Company</label>
+                <input type="text" />
+              </InputBlock>
+              <InputBlock>
+                <label htmlFor="">Job title</label>
+                <input type="text" />
+              </InputBlock>
+            </SectionBlock>
+            <SectionBlock>
+              <Title>Social</Title>
+              <InputBlock>
+                <label htmlFor="">Twitter</label>
+                <input type="text" />
+              </InputBlock>
+              <InputBlock>
+                <label htmlFor="">Github</label>
+                <input type="text" />
+              </InputBlock>
+              <InputBlock>
+                <label htmlFor="">Website</label>
+                <input type="text" />
+              </InputBlock>
+            </SectionBlock>
+          </DetailContentBlock>
+        )}
       </MoreDetailsBlock>
     </MypageScreenBlock>
   )
