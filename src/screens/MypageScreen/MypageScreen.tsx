@@ -125,6 +125,31 @@ const SectionBlock = styled.div`
   margin-bottom: 40px;
 `
 
+const ButtonBlock = styled.div`
+  margin-bottom: 50px;
+  text-align: center;
+  button {
+    width: 200px;
+    height: 32px;
+    margin: 0 20px;
+    background-color: #a8b3cf14;
+    border: 0;
+    border-radius: 10px;
+    outline: none;
+    cursor: pointer;
+    span {
+      font-weight: 600;
+      color: #fff;
+    }
+    &:hover {
+      background-color: #fff;
+      span {
+        color: #686e78;
+      }
+    }
+  }
+`
+
 const MypageScreen: FunctionComponent = () => {
   const [toggleDetailView, setToggleDetailView] = useState(false)
 
@@ -198,6 +223,14 @@ const MypageScreen: FunctionComponent = () => {
           </DetailContentBlock>
         )}
       </MoreDetailsBlock>
+      <ButtonBlock>
+        <button>
+          <span>Save changes</span>
+        </button>
+        <button>
+          <span>Logout</span>
+        </button>
+      </ButtonBlock>
     </MypageScreenBlock>
   )
 }
