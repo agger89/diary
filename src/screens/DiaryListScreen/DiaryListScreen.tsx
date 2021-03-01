@@ -1,5 +1,9 @@
 import React, { FunctionComponent } from 'react'
 import styled from 'styled-components'
+import {
+  CommentDetail as CommentDetailIcon,
+  Like as LikeIcon,
+} from '@styled-icons/boxicons-regular'
 
 const DiaryListScreenBlock = styled.div``
 const DiaryListItemBlock = styled.div`
@@ -34,8 +38,23 @@ const ImageBlock = styled.div`
 `
 const BottomButtonBlock = styled.div`
   display: flex;
-  justify-content: space-between;
   margin: 12px 20px 0;
+  button {
+    margin-right: 10px;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    svg {
+      margin-right: 8px;
+      width: 20px;
+      height: 20px;
+      color: #aaabb5;
+    }
+    .count {
+      display: inline-block;
+      color: #aaabb5;
+    }
+  }
 `
 
 const DiaryListScreen: FunctionComponent = () => {
@@ -52,9 +71,14 @@ const DiaryListScreen: FunctionComponent = () => {
           <img src="" alt="" />
         </ImageBlock>
         <BottomButtonBlock>
-          <button>1</button>
-          <button>2</button>
-          <button>3</button>
+          <button>
+            <LikeIcon />
+            <span className="count">55</span>
+          </button>
+          <button>
+            <CommentDetailIcon />
+            <span className="count">23</span>
+          </button>
         </BottomButtonBlock>
       </DiaryListItemBlock>
     </DiaryListScreenBlock>
