@@ -10,6 +10,20 @@ const DiaryListScreenBlock = styled.div`
   padding: 80px;
 `
 
+const FilterTabBlock = styled.div`
+  margin: 36px 0;
+  .tab-item {
+    padding: 0 12px;
+    font-weight: 600;
+    color: #a9abb3;
+    text-transform: uppercase;
+    cursor: pointer;
+    &:hover {
+      color: #fff;
+    }
+  }
+`
+
 const DiaryListItemBlock = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -19,6 +33,11 @@ const DiaryListItemBlock = styled.div`
 const DiaryListScreen: FunctionComponent = () => {
   return (
     <DiaryListScreenBlock>
+      <FilterTabBlock>
+        <span className="tab-item">popular</span>
+        <span className="tab-item">most like</span>
+        <span className="tab-item">recent</span>
+      </FilterTabBlock>
       <DiaryListItemBlock>
         <DiaryListItemScreen />
         <DiaryListItemScreen />
