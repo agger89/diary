@@ -9,10 +9,13 @@ const DiaryListItemScreenBlock = styled.div`
   min-width: 270px;
   max-width: 340px;
   height: 360px;
-  padding: 8px;
   background-color: #25282c;
   border: 1px solid #34373c;
   border-radius: 16px;
+  cursor: pointer;
+  &:hover {
+    border: 1px solid rgba(255, 255, 255, 0.16);
+  }
   .title {
     margin: 16px 24px 12px;
     color: #fff;
@@ -31,30 +34,36 @@ const DateTimeBlock = styled.span`
   color: #686e78;
 `
 const ImageBlock = styled.div`
-  width: 100%;
   height: 158px;
-  margin: 0 auto;
+  margin: 0 8px;
   background-color: #999;
   border-radius: 12px;
 `
 const BottomButtonBlock = styled.div`
   display: flex;
-  margin: 12px 20px 0;
-  button {
-    margin-right: 10px;
-    background: transparent;
-    border: 0;
-    cursor: pointer;
-    svg {
-      margin-right: 8px;
-      width: 20px;
-      height: 20px;
-      color: #aaabb5;
-    }
+  margin: 16px 16px 0;
+`
+
+const IconButtonBlock = styled.button`
+  margin-right: 10px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  &:hover {
+    .icon,
     .count {
-      display: inline-block;
-      color: #aaabb5;
+      color: #fff;
     }
+  }
+  .icon {
+    margin-right: 8px;
+    width: 20px;
+    height: 20px;
+    color: #aaabb5;
+  }
+  .count {
+    display: inline-block;
+    color: #aaabb5;
   }
 `
 
@@ -71,14 +80,14 @@ const DiaryListItemScreen: FunctionComponent = () => {
         <img src="" alt="" />
       </ImageBlock>
       <BottomButtonBlock>
-        <button>
-          <LikeIcon />
+        <IconButtonBlock>
+          <LikeIcon className="icon" />
           <span className="count">55</span>
-        </button>
-        <button>
-          <CommentDetailIcon />
+        </IconButtonBlock>
+        <IconButtonBlock>
+          <CommentDetailIcon className="icon" />
           <span className="count">23</span>
-        </button>
+        </IconButtonBlock>
       </BottomButtonBlock>
     </DiaryListItemScreenBlock>
   )
