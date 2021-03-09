@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from 'react'
 import styled from 'styled-components'
 import DiaryListItemScreen from './DirayListItemScreen'
+import DiaryListFilterScreen from './DiaryListFilterScreen'
 
 const DiaryListScreenBlock = styled.div`
   display: flex;
@@ -8,20 +9,6 @@ const DiaryListScreenBlock = styled.div`
   align-self: center;
   flex-direction: column;
   padding: 80px;
-`
-
-const FilterTabBlock = styled.div`
-  margin: 36px 0;
-  .tab-item {
-    padding: 0 12px;
-    font-weight: 600;
-    color: #a9abb3;
-    text-transform: uppercase;
-    cursor: pointer;
-    &:hover {
-      color: #fff;
-    }
-  }
 `
 
 const DiaryListItemBlock = styled.div`
@@ -33,11 +20,7 @@ const DiaryListItemBlock = styled.div`
 const DiaryListScreen: FunctionComponent = () => {
   return (
     <DiaryListScreenBlock>
-      <FilterTabBlock>
-        <span className="tab-item">popular</span>
-        <span className="tab-item">most like</span>
-        <span className="tab-item">recent</span>
-      </FilterTabBlock>
+      <DiaryListFilterScreen />
       <DiaryListItemBlock>
         <DiaryListItemScreen />
         <DiaryListItemScreen />
