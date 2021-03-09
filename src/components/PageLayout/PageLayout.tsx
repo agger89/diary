@@ -1,5 +1,6 @@
 import React, { FunctionComponent, ReactNode } from 'react'
 import styled from 'styled-components'
+import Header from '../Header'
 
 const PageLayoutBlock = styled.div`
   display: flex;
@@ -13,7 +14,12 @@ interface PageLayoutProps {
 }
 
 const PageLayout: FunctionComponent<PageLayoutProps> = ({ children }) => {
-  return <PageLayoutBlock>{children}</PageLayoutBlock>
+  return (
+    <PageLayoutBlock>
+      <Header />
+      {children}
+    </PageLayoutBlock>
+  )
 }
 
 export default PageLayout

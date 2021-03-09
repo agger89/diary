@@ -4,6 +4,10 @@ import { ShareAlt } from '@styled-icons/boxicons-regular'
 import ProfileImage from 'components/ProfileImage'
 
 const DiaryHeaderBlock = styled.div`
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
   display: flex;
   align-items: center;
   margin-bottom: 26px;
@@ -14,10 +18,15 @@ const DiaryHeaderBlock = styled.div`
     letter-spacing: 1.5px;
   }
 `
+
+const DiaryHeaderRightContentBlock = styled.div`
+  display: flex;
+  margin-left: auto;
+`
+
 const ShareButtonBlock = styled.a`
   display: flex;
   align-items: center;
-  margin-left: auto;
   padding: 4px;
   border-radius: 8px;
   svg {
@@ -40,11 +49,13 @@ const ShareIcon = styled(ShareAlt)`
 const Header: FunctionComponent = () => {
   return (
     <DiaryHeaderBlock>
-      <ProfileImage width={34} height={34} />
       <h6 className="header-title">Diary</h6>
-      <ShareButtonBlock href="#">
-        <ShareIcon />
-      </ShareButtonBlock>
+      <DiaryHeaderRightContentBlock>
+        <ShareButtonBlock href="#">
+          <ShareIcon />
+        </ShareButtonBlock>
+        <ProfileImage width={34} height={34} />
+      </DiaryHeaderRightContentBlock>
     </DiaryHeaderBlock>
   )
 }
