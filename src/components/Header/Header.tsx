@@ -10,7 +10,10 @@ const DiaryHeaderBlock = styled.div`
   left: 0;
   display: flex;
   align-items: center;
+  height: 56px;
   margin-bottom: 26px;
+  padding: 0 8px;
+  border-bottom: 1px solid #313133;
   .header-title {
     font-weight: bold;
     font-size: 16px;
