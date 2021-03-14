@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import Search from 'components/Search'
 
 const FilterTabBlock = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
   margin: 36px 0;
