@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from 'react'
 import styled from 'styled-components'
 import { Search as SearchIcon } from '@styled-icons/boxicons-regular'
+import Tooltip from '../Tooltip'
 
 const SearchBlock = styled.div`
   position: absolute;
@@ -36,10 +37,10 @@ const Search: FunctionComponent = () => {
   return (
     <SearchBlock>
       <SearchIcon />
+      <Tooltip title="Search posts" />
       <SearchInput placeholder="Search" />
     </SearchBlock>
   )
-
 }
 
 export default Search
