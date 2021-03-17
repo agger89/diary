@@ -36,8 +36,8 @@ const SearchInput = styled.input`
 const Search: FunctionComponent = () => {
   return (
     <SearchBlock>
-      <SearchIcon />
       <Tooltip title="Search posts" />
+      <SearchIcon />
       <SearchInput placeholder="Search" />
     </SearchBlock>
   )
