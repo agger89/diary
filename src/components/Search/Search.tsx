@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react'
 import styled from 'styled-components'
 import { Search as SearchIcon } from '@styled-icons/boxicons-regular'
-import Tooltip from '../Tooltip'
+import useHover from '../../hooks/useHover'
 
 const SearchBlock = styled.div`
   position: absolute;
@@ -34,10 +34,14 @@ const SearchInput = styled.input`
 `
 
 const Search: FunctionComponent = () => {
+  const [hoverRef, isHovered] = useHover()
+
   return (
     <SearchBlock>
-      <Tooltip title="Search posts" />
-      <SearchIcon />
+      <div ref={hoverRef}>
+        <SearchIcon />
+        {isHovered ? 'a' : 'b'}
+      </div>
       <SearchInput placeholder="Search" />
     </SearchBlock>
   )
