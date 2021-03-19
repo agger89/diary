@@ -11,6 +11,33 @@ const SearchBlock = styled.div`
   padding: 6px;
   background-color: #27282C;
   border-radius: 8px;
+  .icon-wrapper {
+    position: relative;
+    .icon-text {
+      position: absolute;
+      top: -28px;
+      left: -38px;
+      background-color: #fff;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 14px;
+      letter-spacing: 1.3px;
+      white-space: nowrap;
+      &:after {
+        content: "";
+        position: absolute;
+        bottom: -6px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: inline-block;
+        width: 0;
+        height: 0;
+        border-top: 6px solid #fff;
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+      }
+    }
+  }
   svg {
     width: 20px;
     height: 20px;
@@ -38,9 +65,13 @@ const Search: FunctionComponent = () => {
 
   return (
     <SearchBlock>
-      <div ref={hoverRef}>
+      <div className="icon-wrapper" ref={hoverRef} >
         <SearchIcon />
-        {isHovered ? 'a' : 'b'}
+        {isHovered && (
+          <span className="icon-text">
+            Search posts
+          </span>
+        )}
       </div>
       <SearchInput placeholder="Search" />
     </SearchBlock>
